@@ -114,7 +114,8 @@ foreach ($translationKey in $translationKeys) {
     Assert-True ($translationCount -ge 4) "Traduction incomplete pour : $translationKey"
 }
 Assert-True (([regex]::Matches($js, "'hero\.search\.placeholder'\s*:")).Count -eq 4) "La recherche d'accueil n'est pas traduite dans les 4 langues."
-Assert-True ($js.Contains('const GEMINI_API_KEY')) 'La configuration actuelle de LIA a ete retiree.'
+Assert-True ($js.Contains('AI_NOT_CONFIGURED')) 'Le mode de repli de LIA est absent.'
+Assert-True (-not ($js -match 'AIzaSy[A-Za-z0-9_-]{20,}')) 'Une cle API est exposee dans le JavaScript.'
 Assert-True ($js.Contains('async function getAIReply')) 'Le chatbot LIA a ete retire.'
 Assert-True ($css.Contains('.home-search')) "Styles de la recherche d'accueil absents."
 Assert-True ($css.Contains('.official-link-card')) 'Styles des liens officiels absents.'

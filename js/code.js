@@ -651,25 +651,22 @@ function exploreQuizCategory(category = quizTopCategories[0]) {
 }
 
 // 11. GENERATEUR IA
-// Compatibilité : utilise le proxy s'il est configuré, sinon l'appel Gemini historique.
+// L'IA passe uniquement par un endpoint serveur pour ne jamais exposer de clé côté navigateur.
 const AI_ENDPOINT = (window.CAP221_AI_ENDPOINT || document.querySelector('meta[name="cap221-ai-endpoint"]')?.content || '').trim();
-const GEMINI_API_KEY = "AIzaSyB_inmjTF-2ESRv2qd29I0XSIUW98XnYIg";
 
 async function requestAI(prompt) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 20000);
     try {
-        const useProxy = Boolean(AI_ENDPOINT);
-        const url = useProxy
-            ? AI_ENDPOINT
-            : `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-        const body = useProxy
-            ? { prompt }
-            : { contents: [{ parts: [{ text: prompt }] }] };
-        const response = await fetch(url, {
+        if (!AI_ENDPOINT) {
+            const error = new Error('AI_NOT_CONFIGURED');
+            error.code = 'AI_NOT_CONFIGURED';
+            throw error;
+        }
+        const response = await fetch(AI_ENDPOINT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
+            body: JSON.stringify({ prompt }),
             signal: controller.signal
         });
         const data = await response.json().catch(() => ({}));
