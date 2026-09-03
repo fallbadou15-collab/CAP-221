@@ -1,0 +1,24 @@
+*{box-sizing:border-box}
+:root{--brown:#0F172A;--primary:#4F46E5;--accent:#F97316;--gold:#FBBF24;--paper:#F8FAFC;--text:#0F172A;--muted:#64748B}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--text);font-family:"DM Sans",Arial,sans-serif;line-height:1.75}
+a{color:#3730A3}
+a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.legal-skip{position:fixed;top:.5rem;left:.5rem;z-index:10;transform:translateY(-160%);padding:.65rem 1rem;background:#fff;border-radius:8px;font-weight:700}
+.legal-skip:focus{transform:none}
+.legal-header{background:linear-gradient(135deg,var(--brown),#312E81);color:#fff;padding:1rem 1.25rem}
+.legal-header-inner{max-width:960px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.legal-brand{display:flex;align-items:center;gap:.8rem;color:#fff;text-decoration:none;font-weight:800;font-size:1.15rem}
+.legal-brand img{width:54px;height:54px;border-radius:10px;object-fit:contain;background:#fff}
+.legal-back{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:.55rem .9rem;font-weight:700}
+.legal-main{max-width:960px;margin:2rem auto;padding:0 1.25rem 3rem}
+.legal-hero{background:#fff;border:1px solid rgba(79,70,229,.18);border-radius:22px;padding:clamp(1.4rem,4vw,3rem);box-shadow:0 16px 45px rgba(15,23,42,.1);margin-bottom:1.5rem}
+.legal-hero h1{margin:0 0 .6rem;font-family:Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;color:var(--brown)}
+.legal-hero p{margin:0;color:var(--muted)}
+.legal-card{background:#fff;border-radius:16px;padding:1.35rem 1.5rem;margin:1rem 0;border-left:4px solid var(--primary);box-shadow:0 7px 24px rgba(15,23,42,.07)}
+.legal-card h2{margin:0 0 .5rem;font-size:1.2rem;color:var(--brown)}
+.legal-card p,.legal-card ul{margin:.4rem 0}
+.legal-card li+li{margin-top:.35rem}
+.legal-note{background:#fff8eb;border-left-color:var(--gold)}
+.legal-footer{text-align:center;padding:1.5rem;color:var(--muted);font-size:.9rem;border-top:1px solid rgba(79,70,229,.18)}
+@media(max-width:600px){.legal-header-inner{align-items:flex-start}.legal-back{font-size:.8rem}.legal-card{padding:1.1rem}}

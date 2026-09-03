@@ -1,0 +1,18 @@
+{
+  "name": "CAP 221 — Orientation & Carrières",
+  "short_name": "CAP 221",
+  "description": "Orientation scolaire, métiers et préparation au BAC au Sénégal.",
+  "lang": "fr-SN",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF5EF",
+  "theme_color": "#1A0F0A",
+  "icons": [
+    {
+      "src": "/img/logo-cap221.png",
+      "sizes": "2816x1536",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
