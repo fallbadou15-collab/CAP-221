@@ -1,0 +1,12 @@
+{
+  "name": "cap-221",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CAP 221 orientation platform and secure AI endpoint",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

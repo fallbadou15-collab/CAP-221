@@ -75,6 +75,8 @@ function openAccessibleModal(modal) {
     modalReturnFocus = document.activeElement;
     modal.style.display = 'flex';
     modal.setAttribute('aria-hidden', 'false');
+    modal._trapHandler = (e) => trapModalFocus(e, modal);
+    document.addEventListener('keydown', modal._trapHandler, true);
     setTimeout(() => {
         modal.classList.add('show');
         const box = modal.querySelector('.job-modal-box');
@@ -86,11 +88,45 @@ function closeAccessibleModal(modal) {
     if (!modal) return;
     modal.classList.remove('show');
     modal.setAttribute('aria-hidden', 'true');
+    if (modal._trapHandler) {
+        document.removeEventListener('keydown', modal._trapHandler, true);
+        modal._trapHandler = null;
+    }
     setTimeout(() => {
         if (!modal.classList.contains('show')) modal.style.display = 'none';
         if (modalReturnFocus && typeof modalReturnFocus.focus === 'function') modalReturnFocus.focus({ preventScroll: true });
         modalReturnFocus = null;
     }, 300);
+}
+
+// Maintient le focus à l'intérieur d'une modale ouverte (Tab / Shift+Tab).
+function trapModalFocus(e, modal) {
+    if (e.key !== 'Tab') return;
+    const focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+    const first = focusables[0], last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus({ preventScroll: true });
+    } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus({ preventScroll: true });
+    }
+}
+
+// Synchronise l'état ARIA et l'affichage du chatbot.
+function setChatOpen(chatBtn, chatWin, open) {
+    if (chatWin) {
+        chatWin.style.display = open ? 'flex' : 'none';
+        chatWin.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    if (chatBtn) {
+        chatBtn.style.display = open ? 'none' : 'flex';
+        chatBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (!open) chatBtn.focus({ preventScroll: true });
+        else {
+            const input = document.getElementById('chatInput');
+            if (input) input.focus({ preventScroll: true });
+        }
+    }
 }
 
 function enhanceInteractiveElements(root = document) {
@@ -483,8 +519,15 @@ function openJobDetails(jobName, category) {
     openAccessibleModal(document.getElementById('jobModalOverlay'));
 }
 
+// 7bis. FERMETURE GÉNÉRIQUE DES MODALES
+// Les deux overlays (métier et comparateur) partagent le même comportement de fermeture :
+// une seule fonction générique, appelée par les boutons et le clic hors-modale dans index.html.
+function closeModal(overlayId) {
+    closeAccessibleModal(document.getElementById(overlayId));
+}
+
 function closeJobModal() {
-    closeAccessibleModal(document.getElementById('jobModalOverlay'));
+    closeModal('jobModalOverlay');
 }
 
 // 8. COMPARATEUR
@@ -527,15 +570,15 @@ function openCompareModal() {
 }
 
 function closeCompareModal() {
-    closeAccessibleModal(document.getElementById('compareModalOverlay'));
+    closeModal('compareModalOverlay');
 }
 
 function askAIToCompare() {
     if (compareList.length !== 2) return;
     const job1 = compareList[0].name, job2 = compareList[1].name;
     closeCompareModal();
-    const cw = document.getElementById('chatWindow'); if (cw) cw.style.display = 'flex';
-    const cb = document.getElementById('chatButton'); if (cb) cb.style.display = 'none';
+    const cw = document.getElementById('chatWindow'); const cb = document.getElementById('chatButton');
+    setChatOpen(cb, cw, true);
     const ci = document.getElementById('chatInput'); if (ci) ci.value = `Compare en détail ces deux métiers au Sénégal : ${job1} VS ${job2}.`;
     setTimeout(() => { const sc = document.getElementById('sendChat'); if (sc) sc.click(); }, 300);
 }
@@ -726,8 +769,8 @@ async function getAIReply(message) {
 function askAIAboutJob() {
     const jobName = document.getElementById('mjTitle').innerText, mjCat = document.getElementById('mjCat').innerText;
     closeJobModal();
-    const cw = document.getElementById('chatWindow'); if (cw) cw.style.display = 'flex';
-    const cb = document.getElementById('chatButton'); if (cb) cb.style.display = 'none';
+    const cw = document.getElementById('chatWindow'); const cb = document.getElementById('chatButton');
+    setChatOpen(cb, cw, true);
     let q = `Quelles sont les compétences requises, le salaire moyen et les conditions d'admission au Sénégal pour devenir ${jobName} ?`;
     if (mjCat === "UNIVERSITÉ PUBLIQUE DU SÉNÉGAL") q = `Donne-moi plus de détails historiques et les conditions d'accès à l'${jobName}.`;
     const ci = document.getElementById('chatInput'); if (ci) ci.value = q;
@@ -1318,8 +1361,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chatInput');
     const chatMessages = document.getElementById('chatMessages');
 
-    if (chatBtn) chatBtn.onclick = () => { if (chatWin) chatWin.style.display = 'flex'; chatBtn.style.display = 'none'; };
-    if (closeChat) closeChat.onclick = () => { if (chatWin) chatWin.style.display = 'none'; if (chatBtn) chatBtn.style.display = 'flex'; };
+    if (chatBtn) chatBtn.onclick = () => setChatOpen(chatBtn, chatWin, true);
+    if (closeChat) closeChat.onclick = () => setChatOpen(chatBtn, chatWin, false);
 
     // Défilement intelligent : ne suit le bas que si l'utilisateur y est déjà (ou vient d'écrire).
     let userNearBottom = true;
