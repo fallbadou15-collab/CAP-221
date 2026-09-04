@@ -27,7 +27,10 @@ const mimeTypes = {
 function sendJson(response, status, body) {
     response.writeHead(status, {
         'Content-Type': 'application/json; charset=utf-8',
-        'Cache-Control': 'no-store'
+        'Cache-Control': 'no-store',
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:5500',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
     });
     response.end(JSON.stringify(body));
 }
@@ -60,6 +63,7 @@ function readRequestBody(request) {
 }
 
 async function handleAI(request, response) {
+    if (request.method === 'OPTIONS') return sendJson(response, 204, {});
     if (request.method !== 'POST') {
         response.setHeader('Allow', 'POST');
         return sendJson(response, 405, { error: 'Method not allowed' });

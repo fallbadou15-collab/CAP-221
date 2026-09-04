@@ -695,7 +695,10 @@ function exploreQuizCategory(category = quizTopCategories[0]) {
 
 // 11. GENERATEUR IA
 // L'IA passe uniquement par un endpoint serveur pour ne jamais exposer de clé côté navigateur.
-const AI_ENDPOINT = (window.CAP221_AI_ENDPOINT || document.querySelector('meta[name="cap221-ai-endpoint"]')?.content || '').trim();
+const configuredAIEndpoint = (window.CAP221_AI_ENDPOINT || document.querySelector('meta[name="cap221-ai-endpoint"]')?.content || '').trim();
+const AI_ENDPOINT = configuredAIEndpoint || (
+    ['localhost', '127.0.0.1'].includes(window.location.hostname) ? 'http://localhost:10000/api/ai' : ''
+);
 
 async function requestAI(prompt) {
     const controller = new AbortController();
