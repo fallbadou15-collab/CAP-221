@@ -25,10 +25,14 @@ const mimeTypes = {
 };
 
 function sendJson(response, status, body) {
+    const origin = response.req.headers.origin;
+    const allowedOrigin = origin === 'http://localhost:5500' || origin === 'http://127.0.0.1:5500'
+        ? origin
+        : 'null';
     response.writeHead(status, {
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store',
-        'Access-Control-Allow-Origin': 'http://127.0.0.1:5500',
+        'Access-Control-Allow-Origin': allowedOrigin,
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST, OPTIONS'
     });
