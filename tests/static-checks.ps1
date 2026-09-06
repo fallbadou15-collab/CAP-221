@@ -45,7 +45,7 @@ $requiredHtml = @(
     'https://orientation.campusen.sn/',
     'https://officedubac.sn/',
     'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
-    'rel="canonical" href="https://cap-221.onrender.com/"'
+    'rel="canonical" href="https://cap221.com/"'
     'rel="manifest" href="site.webmanifest"'
     'img/cap221-social.png'
     'href="mentions-legales.html"'

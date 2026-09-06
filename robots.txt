@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cap-221.onrender.com/sitemap.xml
+Sitemap: https://cap221.com/sitemap.xml
