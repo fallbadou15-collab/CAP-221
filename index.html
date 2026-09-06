@@ -191,6 +191,17 @@
           <button
             class="theme-btn"
             type="button"
+            id="accountBtn"
+            onclick="openAuthModal()"
+            aria-label="Ouvrir mon compte"
+            title="Connexion"
+          >
+            <i class="fas fa-user"></i>
+            <span id="accountName" class="account-name" style="display:none;"></span>
+          </button>
+          <button
+            class="theme-btn"
+            type="button"
             onclick="navigateTo('favorites')"
             style="color: var(--accent); border-color: var(--accent)"
             title="Mes Favoris"
@@ -1722,6 +1733,55 @@
       </div>
     </div>
 
+    <div
+      id="authModalOverlay"
+      class="job-modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-labelledby="authModalTitle"
+      onclick="if (event.target === this) closeModal('authModalOverlay');"
+    >
+      <div class="job-modal-box auth-modal-box" tabindex="-1">
+        <div class="jm-header">
+          <button class="jm-close" type="button" onclick="closeModal('authModalOverlay')" aria-label="Fermer la fenêtre">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+          <div class="jm-cat">CAP 221</div>
+          <h2 class="jm-title" id="authModalTitle">Mon espace étudiant</h2>
+        </div>
+        <div class="jm-body">
+          <div id="authForms">
+            <div class="auth-tabs">
+              <button id="tabLogin" class="auth-tab active" type="button" onclick="switchAuthTab('login')">Connexion</button>
+              <button id="tabSignup" class="auth-tab" type="button" onclick="switchAuthTab('signup')">Créer un compte</button>
+            </div>
+            <form id="loginForm" class="auth-form">
+              <input class="gen-input" id="loginEmail" type="email" placeholder="Adresse email" autocomplete="email" required>
+              <input class="gen-input" id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+              <button class="primary-btn" type="submit"><i class="fas fa-right-to-bracket"></i> Se connecter</button>
+            </form>
+            <form id="signupForm" class="auth-form" style="display:none;">
+              <input class="gen-input" id="signupName" type="text" placeholder="Prénom et nom" autocomplete="name" minlength="2" required>
+              <input class="gen-input" id="signupEmail" type="email" placeholder="Adresse email" autocomplete="email" required>
+              <input class="gen-input" id="signupPassword" type="password" placeholder="Mot de passe (8 caractères minimum)" autocomplete="new-password" minlength="8" required>
+              <button class="primary-btn" type="submit"><i class="fas fa-user-plus"></i> Créer mon compte</button>
+            </form>
+            <div id="authStatus" class="auth-status" style="display:none;" role="status"></div>
+          </div>
+          <div id="authProfile" style="display:none;">
+            <div class="auth-profile-card">
+              <div class="auth-avatar"><i class="fas fa-user"></i></div>
+              <div><strong id="profileName"></strong><small id="profileEmail"></small></div>
+            </div>
+            <p class="auth-hint">Tes favoris sont synchronisés sur ton espace étudiant.</p>
+            <button class="primary-btn" type="button" onclick="navigateTo('favorites'); closeModal('authModalOverlay');">Voir mes favoris</button>
+            <button class="secondary-btn" type="button" onclick="logoutUser()">Se déconnecter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- CHATBOT -->
     <button class="chat-button" id="chatButton" type="button" aria-expanded="false" aria-controls="chatWindow" aria-haspopup="dialog" aria-label="Ouvrir le chat Cap 221 Assistant">
       <i class="fas fa-comments"></i>
@@ -1791,5 +1851,6 @@
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
     ></script>
     <script defer src="js/code.js"></script>
+    <script defer src="js/auth-client.js"></script>
   </body>
 </html>
