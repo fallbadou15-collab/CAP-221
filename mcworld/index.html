@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>McWorld — Borne de commande</title>
+<!-- Police maison proche de la typo des bornes McDo -->
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- ============ ÉCRAN 1 : ACCUEIL ============ -->
+<div class="screen active" id="s-welcome">
+  <div class="welcome">
+    <div class="mlogo"></div>
+    <h1>McWorld</h1>
+    <p class="w-sub">Bienvenue · Welcome · Welcome ·</p>
+    <p class="w-q" id="wQ">Mangez-vous sur place ou à emporter ?</p>
+    <div class="w-choice">
+      <button class="w-btn" onclick="startOrder('Sur place')">
+        <span class="w-ico">🍽️</span><strong id="wIn">Sur place</strong><small id="wInSub">Eat in</small>
+      </button>
+      <button class="w-btn" onclick="startOrder('À emporter')">
+        <span class="w-ico">🥡</span><strong id="wOut">À emporter</strong><small id="wOutSub">Take away</small>
+      </button>
+    </div>
+    <div class="w-lang">
+      <button class="lang-pill active" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button class="lang-pill" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ÉCRAN 2 : MENU ============ -->
+<div class="screen" id="s-menu">
+  <header class="mhead">
+    <button class="icon-btn" onclick="goHome()">🏠</button>
+    <div class="order-mode" id="modeChip">🍽️ Sur place</div>
+    <nav class="cat-tabs" id="catTabs"></nav>
+  </header>
+  <div class="mbody">
+    <div class="items-grid" id="itemsGrid"></div>
+  </div>
+  <footer class="cartbar" id="cartBar" onclick="openCart()">
+    <span class="cb-count" id="cbCount">0</span>
+    <span class="cb-label" id="cbLabel">Voir le panier</span>
+    <span class="cb-total" id="cbTotal">0 FCFA</span>
+  </footer>
+</div>
+
+<!-- ============ MODAL PRODUIT ============ -->
+<div class="overlay" id="itemModal">
+  <div class="modal">
+    <button class="icon-btn modal-x" onclick="closeItem()">✕</button>
+    <div class="im-emoji" id="imEmoji">🍔</div>
+    <h2 id="imName">Produit</h2>
+    <p class="im-desc" id="imDesc"></p>
+    <div class="opt-group" id="imSizes"></div>
+    <div class="opt-group">
+      <h3>Suppléments</h3>
+      <div class="chips" id="imExtras"></div>
+    </div>
+    <div class="qty-row">
+      <button class="qty-btn" onclick="modalQty(-1)">−</button>
+      <span id="imQty">1</span>
+      <button class="qty-btn" onclick="modalQty(1)">+</button>
+    </div>
+    <button class="btn-add" id="imAdd" onclick="confirmAdd()">Ajouter · 0 FCFA</button>
+  </div>
+</div>
+
+<!-- ============ ÉCRAN 3 : PANIER ============ -->
+<div class="screen" id="s-cart">
+  <header class="mhead">
+    <button class="icon-btn" onclick="show('s-menu')">←</button>
+    <h2 class="mhead-title" id="cartTitle">Votre commande</h2>
+  </header>
+  <div class="mbody cart-body">
+    <div id="cartLines"></div>
+    <p id="cartEmptyMsg" class="empty-msg">Votre panier est vide 🍟</p>
+  </div>
+  <footer class="totals">
+    <div class="t-row"><span>Sous-total</span><span id="tSub">0 FCFA</span></div>
+    <div class="t-row grand"><span>Total</span><span id="tTotal">0 FCFA</span></div>
+    <button class="btn-cta" onclick="goUpsell()">Continuer →</button>
+  </footer>
+</div>
+
+<!-- ============ ÉCRAN 4 : SUGGESTIONS ============ -->
+<div class="screen" id="s-upsell">
+  <header class="mhead">
+    <button class="icon-btn" onclick="show('s-cart')">←</button>
+    <h2 class="mhead-title" id="upTitle">Une gourmandise en plus ? 🍨</h2>
+  </header>
+  <div class="mbody">
+    <div class="items-grid" id="upsellGrid"></div>
+  </div>
+  <footer class="totals">
+    <div class="t-row grand"><span>Total</span><span id="upTotal">0 FCFA</span></div>
+    <button class="btn-cta" onclick="goPay()">Passer au paiement →</button>
+  </footer>
+</div>
+
+<!-- ============ ÉCRAN 5 : PAIEMENT ============ -->
+<div class="screen" id="s-pay">
+  <header class="mhead">
+    <button class="icon-btn" onclick="show('s-upsell')">←</button>
+    <h2 class="mhead-title">Comment souhaitez-vous payer ?</h2>
+  </header>
+  <div class="mbody pay-body">
+    <div class="pay-grid" id="payGrid"></div>
+    <div class="pay-recap" id="payRecap"></div>
+  </div>
+  <footer class="totals">
+    <div class="t-row grand"><span>À payer</span><span id="payTotal">0 FCFA</span></div>
+  </footer>
+</div>
+
+<!-- ============ ÉCRAN 6 : TICKET ============ -->
+<div class="screen" id="s-ticket">
+  <div class="ticket-wrap">
+    <div class="check">✅</div>
+    <h2>Merci de votre commande !</h2>
+    <p class="tk-mode" id="tkMode"></p>
+    <div class="tk-num" id="tkNum">N° 00</div>
+    <div class="ticket" id="tkLines"></div>
+    <div class="tk-qr" id="tkQr"></div>
+    <p class="tk-info" id="tkInfo"></p>
+    <p class="tk-wait">⏱️ Préparation en cours — récupérez votre commande au comptoir</p>
+    <button class="btn-cta" id="tkDone" onclick="goHome()">Terminer</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

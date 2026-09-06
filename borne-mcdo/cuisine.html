@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>McBornes — Écran Cuisine</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="cuisine.css" />
+  </head>
+  <body class="kitchen-body">
+    <header class="topbar">
+      <div class="brand"><span class="brand-m">M</span> Écran Cuisine</div>
+      <p class="tagline">
+        Les commandes arrivent en direct depuis les bornes 🍟
+      </p>
+    </header>
+
+    <main class="kds-wrap">
+      <div class="kds-stats">
+        <span id="statNew">0 nouvelles</span>
+        <span id="statPrep">0 en préparation</span>
+        <span id="statReady">0 prêtes</span>
+        <button class="btn ghost" onclick="clearDone()">
+          🧹 Effacer les commandes servies
+        </button>
+      </div>
+      <div class="kds-grid" id="ordersGrid"></div>
+      <p id="noOrders" class="cart-empty">
+        Aucune commande pour l'instant — passez une commande sur la borne ! 🖥️
+      </p>
+    </main>
+
+    <footer class="foot">
+      McBornes — Écran Cuisine ·
+      <a href="index.html" style="color: inherit">🖥️ Retour à la borne</a>
+    </footer>
+    <script src="cuisine.js"></script>
+  </body>
+</html>

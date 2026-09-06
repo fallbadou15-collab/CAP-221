@@ -2,6 +2,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const { URL } = require('node:url');
+const { handleAuthRoute } = require('./auth');
 
 const root = __dirname;
 const port = Number(process.env.PORT || 10000);
@@ -130,10 +131,22 @@ function serveStatic(request, response, pathname) {
     });
 }
 
-const server = http.createServer((request, response) => {
+const server = http.createServer(async (request, response) => {
     const url = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
     if (url.pathname === '/api/health') return sendJson(response, 200, { ok: true });
     if (url.pathname === '/api/ai') return handleAI(request, response);
+    if (url.pathname.startsWith('/api/auth/')) {
+        let body = {};
+        if (request.method === 'POST') {
+            try {
+                const raw = await readRequestBody(request);
+                body = raw ? JSON.parse(raw) : {};
+            } catch {
+                return sendJson(response, 400, { error: 'Invalid JSON body' });
+            }
+        }
+        return handleAuthRoute(request, response, url.pathname, body);
+    }
     if (request.method !== 'GET' && request.method !== 'HEAD') return response.writeHead(405).end();
     return serveStatic(request, response, decodeURIComponent(url.pathname));
 });
@@ -141,3 +154,4 @@ const server = http.createServer((request, response) => {
 server.listen(port, '0.0.0.0', () => {
     console.log(`CAP 221 server listening on port ${port}`);
 });
+

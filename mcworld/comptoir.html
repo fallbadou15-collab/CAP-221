@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>McWorld — Comptoir</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="cuisine.css" />
+    <link rel="stylesheet" href="comptoir.css" />
+  </head>
+  <body class="kitchen-body">
+    <header class="mhead kds-head">
+      <div class="mlogo small"></div>
+      <h2 class="mhead-title">McWorld · Comptoir</h2>
+      <nav class="ctr-links">
+        <a href="cuisine.html">👨‍🍳 Cuisine</a>
+        <a href="index.html">🖥️ Borne</a>
+      </nav>
+    </header>
+
+    <main class="mbody">
+      <h3 class="ctr-title">✅ Commandes prêtes à retirer</h3>
+      <div class="ctr-grid" id="readyGrid"></div>
+      <p id="noneReady" class="empty-msg light">
+        Aucune commande prête pour l'instant.
+      </p>
+    </main>
+
+    <div class="toast" id="toast"></div>
+    <script src="comptoir.js"></script>
+  </body>
+</html>

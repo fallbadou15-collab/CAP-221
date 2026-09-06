@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>McWorld — Écran Cuisine</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="cuisine.css" />
+  </head>
+  <body class="kitchen-body">
+    <header class="mhead kds-head">
+      <div class="mlogo small"><span>M</span></div>
+      <h2 class="mhead-title">McWorld · Écran Cuisine</h2>
+      <a class="back-link" href="index.html">← Borne</a>
+  <a class="back-link" style="margin-left: 1rem" href="comptoir.html">✅ Comptoir</a>
+    </header>
+
+    <main class="mbody">
+      <div class="kds-stats">
+        <span id="statNew" class="st-pill st-yellow">0 nouvelles</span>
+        <span id="statPrep" class="st-pill st-orange">0 en préparation</span>
+        <span id="statReady" class="st-pill st-green">0 prêtes</span>
+        <button class="btn-ghost" onclick="clearDone()">
+          🧹 Effacer les servies
+        </button>
+      </div>
+      <div class="kds-grid" id="ordersGrid"></div>
+      <p id="noOrders" class="empty-msg light">
+        Aucune commande — passez commande sur la borne ! 🖥️
+      </p>
+    </main>
+
+    <div class="toast" id="toast"></div>
+    <script src="cuisine.js"></script>
+  </body>
+</html>
