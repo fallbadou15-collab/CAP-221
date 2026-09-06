@@ -146,6 +146,7 @@ async function mergeAndPushFavorites() {
   try {
     const data = await api("/api/auth/favorites");
     const cloud = data.favorites || { jobs: [], univs: [] };
+    const beforeMerge = JSON.stringify(favorites);
     // Fusion : le cloud gagne, mais on garde les favoris locaux absents du cloud
     ["jobs", "univs"].forEach((key) => {
       const ids = new Set(cloud[key].map((item) => item.id));
@@ -154,9 +155,12 @@ async function mergeAndPushFavorites() {
       });
       favorites[key] = cloud[key].slice(0, 200);
     });
-    writeStorage("cap221_favs", JSON.stringify(favorites));
-    renderFavorites();
-    scheduleFavoritesPush();
+    const afterMerge = JSON.stringify(favorites);
+    if (afterMerge !== beforeMerge) {
+      writeStorage("cap221_favs", afterMerge);
+      renderFavorites();
+      scheduleFavoritesPush();
+    }
   } catch {
     /* hors-ligne : on garde le local */
   }
