@@ -4,6 +4,10 @@
 // ============================================================
 
 let currentUser = null;
+const authApiBase =
+  window.location.port === "5500"
+    ? `${window.location.protocol}//${window.location.hostname}:10000`
+    : "";
 
 function authStatus(type, message) {
   const el = document.getElementById("authStatus");
@@ -64,9 +68,9 @@ function renderProfile() {
 }
 
 async function api(path, options = {}) {
-  const res = await fetch(path, {
+  const res = await fetch(`${authApiBase}${path}`, {
     headers: { "Content-Type": "application/json" },
-    credentials: "same-origin",
+    credentials: "include",
     ...options,
   });
   const data = await res.json().catch(() => ({}));

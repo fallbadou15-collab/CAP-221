@@ -34,6 +34,7 @@ function sendJson(response, status, body) {
         'Content-Type': 'application/json; charset=utf-8',
         'Cache-Control': 'no-store',
         'Access-Control-Allow-Origin': allowedOrigin,
+        'Access-Control-Allow-Credentials': 'true',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST, OPTIONS'
     });
@@ -133,6 +134,16 @@ function serveStatic(request, response, pathname) {
 
 const server = http.createServer(async (request, response) => {
     const url = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
+    const origin = request.headers.origin;
+    if (origin === 'http://localhost:5500' || origin === 'http://127.0.0.1:5500') {
+        response.setHeader('Access-Control-Allow-Origin', origin);
+        response.setHeader('Access-Control-Allow-Credentials', 'true');
+        response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    }
+    if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
+        return response.writeHead(204).end();
+    }
     if (url.pathname === '/api/health') return sendJson(response, 200, { ok: true });
     if (url.pathname === '/api/ai') return handleAI(request, response);
     if (url.pathname.startsWith('/api/auth/')) {
@@ -154,4 +165,3 @@ const server = http.createServer(async (request, response) => {
 server.listen(port, '0.0.0.0', () => {
     console.log(`CAP 221 server listening on port ${port}`);
 });
-
