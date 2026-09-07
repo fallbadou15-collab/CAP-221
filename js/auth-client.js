@@ -9,6 +9,27 @@ const authApiBase =
     ? `${window.location.protocol}//${window.location.hostname}:10000`
     : "";
 
+function renderTurnstileWidget(container) {
+  if (!container || container.dataset.rendered === "true") return;
+  if (!window.turnstile) {
+    setTimeout(() => renderTurnstileWidget(container), 250);
+    return;
+  }
+  window.turnstile.render(container, {
+    sitekey: container.dataset.sitekey,
+    callback: () => {},
+    "expired-callback": () => {
+      container.dataset.rendered = "false";
+    },
+  });
+  container.dataset.rendered = "true";
+}
+
+function renderAuthTurnstile() {
+  renderTurnstileWidget(document.querySelector("#loginForm .cf-turnstile"));
+  renderTurnstileWidget(document.querySelector("#signupForm .cf-turnstile"));
+}
+
 function authStatus(type, message) {
   const el = document.getElementById("authStatus");
   if (!el) return;
@@ -39,6 +60,7 @@ function switchAuthTab(tab) {
     if (tabLogin) tabLogin.classList.add("active");
     if (tabSignup) tabSignup.classList.remove("active");
   }
+  renderAuthTurnstile();
 
   function showForgotPassword() {
     document.getElementById("loginForm").style.display = "none";
@@ -88,6 +110,7 @@ function switchAuthTab(tab) {
 function openAuthModal() {
   if (currentUser) renderProfile();
   openAccessibleModal(document.getElementById("authModalOverlay"));
+  setTimeout(renderAuthTurnstile, 100);
 }
 
 function renderProfile() {

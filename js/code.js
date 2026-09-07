@@ -228,6 +228,11 @@ function navigateTo(pageId, isBack = false) {
         menuButton.setAttribute('aria-label', 'Ouvrir le menu');
     }
     if (pageId === 'revisions') setTimeout(initCharts, 300);
+    if (pageId === 'contact') setTimeout(() => {
+        if (typeof renderTurnstileWidget === 'function') {
+            renderTurnstileWidget(document.getElementById('contactTurnstile'));
+        }
+    }, 100);
     if (pageId === 'favorites') renderFavorites();
     if (window.location.hash !== `#${pageId}`) history.replaceState(null, '', `#${pageId}`);
     setTimeout(initReveal, 100);

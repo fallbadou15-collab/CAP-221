@@ -74,7 +74,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
     <script>
       window.CAP221_TURNSTILE_SITE_KEY = "0x4AAAAAAEsDm12BksBbgsP2";
     </script>
@@ -1571,6 +1571,7 @@
 
                 <!-- Bouton envoi -->
                 <div
+                  id="contactTurnstile"
                   class="cf-turnstile"
                   data-sitekey="0x4AAAAAAEsDm12BksBbgsP2"
                   data-callback="cap221TurnstileCallback"
