@@ -934,8 +934,8 @@ const translations = {
     fr: {
         flag: '🇫🇷', code: 'FR', dir: 'ltr', data: {
             'nav.home': 'Accueil', 'nav.univ': 'Universités', 'nav.explore': 'Métiers', 'nav.revisions': 'BAC', 'nav.campusen': 'Campusen', 'nav.concours': 'Concours', 'nav.fav': 'Favoris', 'nav.about': 'À propos', 'nav.contact': 'Contact', 'nav.generator': 'CV & IA', 'lang.label': 'Langues',
-            'hero.eyebrow': 'Orientation scolaire au Sénégal', 'hero.title1': 'Trouve', 'hero.title2': 'ta voie', 'hero.title3': '',
-            'hero.sub': "Un point de départ simple pour choisir une formation, découvrir un métier et préparer le BAC au Sénégal.",
+            'hero.eyebrow': 'Orientation scolaire au Sénégal', 'hero.title1': 'Le Cap', 'hero.title2': 'vers la', 'hero.title3': 'Réussite',
+            'hero.sub': "Découvrez les universités du Sénégal, les métiers d'avenir, et préparez-vous avec les sujets officiels du Baccalauréat.",
             'hero.cta1': 'Universités', 'hero.cta3': 'Préparer le BAC', 'hero.cta4': 'Contact', 'hero.search.label': 'Rechercher un métier ou une formation', 'hero.search.placeholder': 'Ex. développeur, médecine, droit…', 'hero.search.button': 'Rechercher', 'hero.scroll': 'Découvrir',
             'hero.badge1': '+90 métiers et formations', 'hero.badge2': 'Sénégal & Monde', 'hero.badge3': 'Sujets BAC Officiels',
             'stats.univ': 'Universités présentées', 'stats.jobs': 'Métiers', 'stats.domains': 'Domaines', 'stats.series': 'Séries BAC', 'stats.free': 'Gratuit',
