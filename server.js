@@ -126,9 +126,11 @@ function serveStatic(request, response, pathname) {
     if (!filePath.startsWith(root + path.sep)) return response.writeHead(403).end();
     fs.stat(filePath, (statError, stats) => {
         if (statError || !stats.isFile()) return response.writeHead(404).end('Not found');
+        const isVersionedAsset = /\.(?:css|js|png|jpg|jpeg|svg|webmanifest)$/.test(filePath);
         response.writeHead(200, {
             'Content-Type': mimeTypes[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
-            'X-Content-Type-Options': 'nosniff'
+            'X-Content-Type-Options': 'nosniff',
+            'Cache-Control': isVersionedAsset ? 'public, max-age=86400' : 'no-cache'
         });
         fs.createReadStream(filePath).pipe(response);
     });
