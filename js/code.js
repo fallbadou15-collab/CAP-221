@@ -1234,6 +1234,11 @@ function initContactForm() {
             return;
         }
         if (robotWrap) robotWrap.classList.remove('input-error');
+        const turnstileToken = form.querySelector('[name="cf-turnstile-response"]')?.value || '';
+        if (!turnstileToken) {
+            showFormStatus('error', 'Veuillez terminer la vérification anti-robot.');
+            return;
+        }
 
         const messageSignature = [fields.email.value, fields.sujet.value, fields.message.value]
             .map(value => value.trim().toLowerCase().replace(/\s+/g, ' '))
