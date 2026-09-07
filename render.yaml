@@ -18,3 +18,5 @@ services:
         sync: false
       - key: PUBLIC_URL
         value: https://cap221.com
+      - key: TURNSTILE_SECRET_KEY
+        sync: false

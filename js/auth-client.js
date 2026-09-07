@@ -140,9 +140,11 @@ async function handleAuthSubmit(formId, path, buildBody) {
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> …';
     }
     try {
+      const turnstileToken = form.querySelector('[name="cf-turnstile-response"]')?.value || "";
+      if (!turnstileToken) throw new Error("Confirme que tu n'es pas un robot.");
       const data = await api(path, {
         method: "POST",
-        body: JSON.stringify(buildBody(form)),
+        body: JSON.stringify({ ...buildBody(form), turnstileToken }),
       });
       currentUser = data.user;
       authStatus(
@@ -160,9 +162,12 @@ async function handleAuthSubmit(formId, path, buildBody) {
         submitBtn.disabled = false;
         submitBtn.innerHTML = original;
       }
+
     }
   });
 }
+
+window.cap221TurnstileCallback = function () {};
 
 async function logoutUser() {
   try {

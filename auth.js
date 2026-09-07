@@ -15,6 +15,34 @@ const sessions = new Map(); // token -> { email, expiresAt }
 const resetRequestTimes = new Map();
 const SESSION_TTL = 30 * 24 * 3600 * 1000; // 30 jours
 const RESET_TTL = 15 * 60 * 1000;
+const turnstileSecretKey = process.env.TURNSTILE_SECRET_KEY;
+
+async function verifyTurnstile(token, request) {
+    if (!turnstileSecretKey) return false;
+    if (typeof token !== 'string' || token.length < 20) return false;
+    const forwardedFor = request.headers['x-forwarded-for'];
+    const remoteip = forwardedFor ? forwardedFor.split(',')[0].trim() : request.socket.remoteAddress;
+    const body = new URLSearchParams({ secret: turnstileSecretKey, response: token });
+    if (remoteip) body.set('remoteip', remoteip);
+    const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body
+    });
+    if (!result.ok) return false;
+    const data = await result.json();
+    return data.success === true;
+}
+
+async function requireTurnstile(request, response, body) {
+    try {
+        if (await verifyTurnstile(body.turnstileToken, request)) return true;
+    } catch (error) {
+        console.error('Turnstile verification failed:', error.message);
+    }
+    sendJson(response, 403, { error: 'Vérification anti-robot invalide. Réessaie.' });
+    return false;
+}
 
 function ensureDataDir() {
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
@@ -99,7 +127,8 @@ function publicUser(user) {
     return { email: user.email, name: user.name, favorites: user.favorites || { jobs: [], univs: [] } };
 }
 
-function handleSignup(request, response, body) {
+async function handleSignup(request, response, body) {
+    if (!(await requireTurnstile(request, response, body))) return;
     const { name, email, password } = body;
     if (!validEmail(email)) return send400(response, 'Email invalide.');
     if (!validPassword(password)) return send400(response, 'Mot de passe : au moins 8 caractÃ¨res.');
@@ -120,7 +149,8 @@ function handleSignup(request, response, body) {
     return sendJson(response, 201, { user: publicUser(users[key]) });
 }
 
-function handleLogin(request, response, body) {
+async function handleLogin(request, response, body) {
+    if (!(await requireTurnstile(request, response, body))) return;
     const { email, password } = body;
     if (!validEmail(email) || typeof password !== 'string') return send400(response, 'Email ou mot de passe invalide.');
     const users = readUsers();

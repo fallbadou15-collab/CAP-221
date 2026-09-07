@@ -74,6 +74,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script>
+      window.CAP221_TURNSTILE_SITE_KEY = "REMPLACER_PAR_LA_CLE_SITE_TURNSTILE";
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -1795,6 +1799,7 @@
             <form id="loginForm" class="auth-form">
               <input class="gen-input" id="loginEmail" type="email" placeholder="Adresse email" autocomplete="email" required>
               <input class="gen-input" id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+              <div class="cf-turnstile" data-sitekey="REMPLACER_PAR_LA_CLE_SITE_TURNSTILE" data-callback="cap221TurnstileCallback"></div>
               <button class="primary-btn" type="submit"><i class="fas fa-right-to-bracket"></i> Se connecter</button>
               <button class="auth-link" type="button" onclick="showForgotPassword()">Mot de passe oublié ?</button>
             </form>
@@ -1814,6 +1819,7 @@
               <input class="gen-input" id="signupName" type="text" placeholder="Prénom et nom" autocomplete="name" minlength="2" required>
               <input class="gen-input" id="signupEmail" type="email" placeholder="Adresse email" autocomplete="email" required>
               <input class="gen-input" id="signupPassword" type="password" placeholder="Mot de passe (8 caractères minimum)" autocomplete="new-password" minlength="8" required>
+              <div class="cf-turnstile" data-sitekey="REMPLACER_PAR_LA_CLE_SITE_TURNSTILE" data-callback="cap221TurnstileCallback"></div>
               <button class="primary-btn" type="submit"><i class="fas fa-user-plus"></i> Créer mon compte</button>
             </form>
             <div id="authStatus" class="auth-status" style="display:none;" role="status"></div>
