@@ -13,7 +13,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3p
 .legal-back{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:.55rem .9rem;font-weight:700}
 .legal-main{max-width:960px;margin:2rem auto;padding:0 1.25rem 3rem}
 .legal-hero{background:#fff;border:1px solid rgba(79,70,229,.18);border-radius:22px;padding:clamp(1.4rem,4vw,3rem);box-shadow:0 16px 45px rgba(15,23,42,.1);margin-bottom:1.5rem}
-.legal-hero h1{margin:0 0 .6rem;font-family:Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;color:var(--brown)}
+.legal-hero h1{margin:0 0 .6rem;font-family:"DM Sans",Arial,sans-serif;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;color:var(--brown)}
 .legal-hero p{margin:0;color:var(--muted)}
 .legal-card{background:#fff;border-radius:16px;padding:1.35rem 1.5rem;margin:1rem 0;border-left:4px solid var(--primary);box-shadow:0 7px 24px rgba(15,23,42,.07)}
 .legal-card h2{margin:0 0 .5rem;font-size:1.2rem;color:var(--brown)}
