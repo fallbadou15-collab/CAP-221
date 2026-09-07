@@ -1796,6 +1796,19 @@
               <input class="gen-input" id="loginEmail" type="email" placeholder="Adresse email" autocomplete="email" required>
               <input class="gen-input" id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
               <button class="primary-btn" type="submit"><i class="fas fa-right-to-bracket"></i> Se connecter</button>
+              <button class="auth-link" type="button" onclick="showForgotPassword()">Mot de passe oublié ?</button>
+            </form>
+            <form id="forgotForm" class="auth-form" style="display:none;">
+              <p class="auth-hint">Entre ton email pour recevoir un lien sécurisé.</p>
+              <input class="gen-input" id="forgotEmail" type="email" placeholder="Adresse email" autocomplete="email" required>
+              <button class="primary-btn" type="submit"><i class="fas fa-envelope"></i> Recevoir le lien</button>
+              <button class="auth-link" type="button" onclick="showLoginForm()">Retour à la connexion</button>
+            </form>
+            <form id="resetForm" class="auth-form" style="display:none;">
+              <p class="auth-hint">Choisis un nouveau mot de passe d'au moins 8 caractères.</p>
+              <input class="gen-input" id="resetPassword" type="password" placeholder="Nouveau mot de passe" autocomplete="new-password" minlength="8" required>
+              <input class="gen-input" id="resetPasswordConfirm" type="password" placeholder="Confirmer le mot de passe" autocomplete="new-password" minlength="8" required>
+              <button class="primary-btn" type="submit"><i class="fas fa-key"></i> Modifier le mot de passe</button>
             </form>
             <form id="signupForm" class="auth-form" style="display:none;">
               <input class="gen-input" id="signupName" type="text" placeholder="Prénom et nom" autocomplete="name" minlength="2" required>

@@ -10,3 +10,11 @@ services:
         sync: false
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
+      - key: GMAIL_USER
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: RESET_FROM_EMAIL
+        sync: false
+      - key: PUBLIC_URL
+        value: https://cap221.com

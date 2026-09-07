@@ -6,11 +6,15 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const nodemailer = require('nodemailer');
 
 const dataDir = path.join(__dirname, 'data');
 const usersFile = path.join(dataDir, 'users.json');
+const resetTokensFile = path.join(dataDir, 'reset-tokens.json');
 const sessions = new Map(); // token -> { email, expiresAt }
+const resetRequestTimes = new Map();
 const SESSION_TTL = 30 * 24 * 3600 * 1000; // 30 jours
+const RESET_TTL = 15 * 60 * 1000;
 
 function ensureDataDir() {
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
@@ -29,8 +33,22 @@ function writeUsers(users) {
     fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
 }
 
+function readResetTokens() {
+    try { return JSON.parse(fs.readFileSync(resetTokensFile, 'utf8')); }
+    catch { return {}; }
+}
+
+function writeResetTokens(tokens) {
+    ensureDataDir();
+    fs.writeFileSync(resetTokensFile, JSON.stringify(tokens, null, 2));
+}
+
 function hashPassword(password, salt) {
     return crypto.scryptSync(password, salt, 64).toString('hex');
+}
+
+function hashResetToken(token) {
+    return crypto.createHash('sha256').update(token).digest('hex');
 }
 
 function validEmail(email) {
@@ -116,6 +134,84 @@ function handleLogin(request, response, body) {
     return sendJson(response, 200, { user: publicUser(user) });
 }
 
+async function sendPasswordResetEmail(email, token) {
+    const user = process.env.GMAIL_USER;
+    const appPassword = process.env.GMAIL_APP_PASSWORD;
+    const from = process.env.RESET_FROM_EMAIL || user;
+    if (!user || !appPassword || !from) throw new Error('GMAIL_SMTP_NOT_CONFIGURED');
+    const baseUrl = process.env.PUBLIC_URL || 'https://cap221.com';
+    const resetUrl = `${baseUrl.replace(/\/$/, '')}/?reset_token=${encodeURIComponent(token)}`;
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user, pass: appPassword }
+    });
+    await transporter.sendMail({
+        from,
+        to: email,
+        subject: 'Réinitialisation de votre mot de passe CAP 221',
+        html: `<p>Bonjour,</p><p>Utilisez ce lien pour choisir un nouveau mot de passe. Il expire dans 15 minutes et ne peut être utilisé qu'une fois.</p><p><a href="${resetUrl}">Réinitialiser mon mot de passe</a></p><p>Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.</p>`
+    });
+}
+
+async function handleForgotPassword(request, response, body) {
+    const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+    if (!validEmail(email)) return send400(response, 'Email invalide.');
+    const address = request.headers['x-forwarded-for']?.split(',')[0].trim() || request.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const recent = (resetRequestTimes.get(address) || []).filter(time => now - time < 15 * 60 * 1000);
+    if (recent.length >= 5) return sendJson(response, 429, { error: 'Trop de demandes. Réessaie dans quelques minutes.' });
+    recent.push(now);
+    resetRequestTimes.set(address, recent);
+    const users = readUsers();
+    const user = users[email];
+    if (user) {
+        const rawToken = crypto.randomBytes(32).toString('hex');
+        const tokens = readResetTokens();
+        Object.keys(tokens).forEach(key => {
+            if (tokens[key].expiresAt < Date.now() || tokens[key].email === email) delete tokens[key];
+        });
+        tokens[hashResetToken(rawToken)] = { email, expiresAt: Date.now() + RESET_TTL };
+        writeResetTokens(tokens);
+        try {
+            await sendPasswordResetEmail(email, rawToken);
+        } catch (error) {
+            delete tokens[hashResetToken(rawToken)];
+            writeResetTokens(tokens);
+            console.error('Gmail password reset email failed:', error.message);
+            return sendJson(response, 503, { error: 'Le service email est temporairement indisponible.' });
+        }
+    }
+    return sendJson(response, 200, { message: 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.' });
+}
+
+function handleResetPassword(response, body) {
+    const token = typeof body.token === 'string' ? body.token : '';
+    const password = body.password;
+    if (!token || !validPassword(password)) return send400(response, 'Token ou mot de passe invalide.');
+    const tokens = readResetTokens();
+    const tokenHash = hashResetToken(token);
+    const record = tokens[tokenHash];
+    if (!record || record.expiresAt < Date.now()) {
+        delete tokens[tokenHash];
+        writeResetTokens(tokens);
+        return sendJson(response, 400, { error: 'Ce lien est invalide ou expiré.' });
+    }
+    const users = readUsers();
+    const user = users[record.email];
+    if (!user) return sendJson(response, 400, { error: 'Ce lien est invalide ou expiré.' });
+    const salt = crypto.randomBytes(16).toString('hex');
+    user.salt = salt;
+    user.hash = hashPassword(password, salt);
+    users[record.email] = user;
+    writeUsers(users);
+    delete tokens[tokenHash];
+    writeResetTokens(tokens);
+    [...sessions.entries()].forEach(([sessionToken, session]) => {
+        if (session.email === record.email) sessions.delete(sessionToken);
+    });
+    return sendJson(response, 200, { message: 'Mot de passe modifié. Vous pouvez vous connecter.' });
+}
+
 function handleLogout(request, response) {
     const token = parseCookies(request).cap221_session;
     if (token) sessions.delete(token);
@@ -149,6 +245,8 @@ function handleAuthRoute(request, response, pathname, body) {
     switch (pathname) {
         case '/api/auth/signup': return handleSignup(request, response, body);
         case '/api/auth/login': return handleLogin(request, response, body);
+        case '/api/auth/forgot-password': return handleForgotPassword(request, response, body);
+        case '/api/auth/reset-password': return handleResetPassword(response, body);
         case '/api/auth/logout': return handleLogout(request, response);
         case '/api/auth/me': {
             const user = getSessionUser(request);

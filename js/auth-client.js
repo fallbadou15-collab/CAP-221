@@ -23,7 +23,11 @@ function switchAuthTab(tab) {
   const tabLogin = document.getElementById("tabLogin");
   const tabSignup = document.getElementById("tabSignup");
   const status = document.getElementById("authStatus");
+  const forgot = document.getElementById("forgotForm");
+  const reset = document.getElementById("resetForm");
   if (status) status.style.display = "none";
+  if (forgot) forgot.style.display = "none";
+  if (reset) reset.style.display = "none";
   if (tab === "signup") {
     if (login) login.style.display = "none";
     if (signup) signup.style.display = "flex";
@@ -34,6 +38,50 @@ function switchAuthTab(tab) {
     if (signup) signup.style.display = "none";
     if (tabLogin) tabLogin.classList.add("active");
     if (tabSignup) tabSignup.classList.remove("active");
+  }
+
+  function showForgotPassword() {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("forgotForm").style.display = "flex";
+  }
+
+  function showLoginForm() {
+    switchAuthTab("login");
+  }
+
+  async function submitForgotPassword(event) {
+    event.preventDefault();
+    try {
+      const data = await api("/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({ email: document.getElementById("forgotEmail").value.trim() }),
+      });
+      authStatus("success", data.message);
+    } catch (error) {
+      authStatus("error", error.message);
+    }
+  }
+
+  async function submitResetPassword(event) {
+    event.preventDefault();
+    const password = document.getElementById("resetPassword").value;
+    if (password !== document.getElementById("resetPasswordConfirm").value) {
+      authStatus("error", "Les mots de passe ne correspondent pas.");
+      return;
+    }
+    const token = new URLSearchParams(window.location.search).get("reset_token");
+    try {
+      const data = await api("/api/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({ token, password }),
+      });
+      authStatus("success", data.message);
+      window.history.replaceState({}, document.title, window.location.pathname);
+      setTimeout(showLoginForm, 900);
+    } catch (error) {
+      authStatus("error", error.message);
+    }
   }
 }
 
@@ -177,6 +225,14 @@ function initAuth() {
     email: form.querySelector("#signupEmail").value.trim(),
     password: form.querySelector("#signupPassword").value,
   }));
+  document.getElementById("forgotForm")?.addEventListener("submit", submitForgotPassword);
+  document.getElementById("resetForm")?.addEventListener("submit", submitResetPassword);
+  if (new URLSearchParams(window.location.search).has("reset_token")) {
+    openAuthModal();
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("resetForm").style.display = "flex";
+  }
 
   // Qui suis-je ? (session existante)
   api("/api/auth/me")
