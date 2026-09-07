@@ -10,7 +10,7 @@ $privacyPath = Join-Path $projectRoot 'politique-confidentialite.html'
 $robotsPath = Join-Path $projectRoot 'robots.txt'
 $sitemapPath = Join-Path $projectRoot 'sitemap.xml'
 $manifestPath = Join-Path $projectRoot 'site.webmanifest'
-$socialImagePath = Join-Path $projectRoot 'img\cap221-social.png'
+$socialImagePath = Join-Path $projectRoot 'img\cap221-social.jpg'
 $notFoundPath = Join-Path $projectRoot '404.html'
 
 $failures = [System.Collections.Generic.List[string]]::new()
@@ -47,7 +47,7 @@ $requiredHtml = @(
     'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js'
     'rel="canonical" href="https://cap221.com/"'
     'rel="manifest" href="site.webmanifest"'
-    'img/cap221-social.png'
+    'img/cap221-social.jpg'
     'href="mentions-legales.html"'
     'href="politique-confidentialite.html"'
     'class="skip-link"'
