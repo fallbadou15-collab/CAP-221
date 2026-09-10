@@ -5,7 +5,7 @@
    - Images externes : cache-first simple.
    - API IA + EmailJS : toujours réseau (jamais mis en cache).
 */
-const CACHE_NAME = "cap221-v2";
+const CACHE_NAME = "cap221-v3";
 const APP_SHELL = [
   "/",
   "/index.html",
