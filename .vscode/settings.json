@@ -1,5 +1,6 @@
 {
   "liveServer.settings.ignoreFiles": [
     "**/data/**"
-  ]
+  ],
+  "liveServer.settings.port": 5501
 }
