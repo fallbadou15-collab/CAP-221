@@ -75,10 +75,6 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
-    <script>
-      window.CAP221_TURNSTILE_SITE_KEY = "0x4AAAAAAEsDm12BksBbgsP2";
-    </script>
     <script type="application/ld+json">
       [
       {
@@ -1142,7 +1138,7 @@
             <span data-i18n="generator.title">Générateur de CV & Lettre</span>
           </h2>
           <p data-i18n="generator.sub">
-            Laisse Cap 221 Assistant structurer ton CV et rédiger ta lettre en
+            Laisse ABF Assistant structurer ton CV et rédiger ta lettre en
             quelques secondes.
           </p>
         </div>
@@ -1360,7 +1356,7 @@
               <div class="response-time-item">
                 <i class="fas fa-robot" style="color: var(--primary)"></i>
                 <div>
-                  <strong>Cap 221 Assistant</strong
+                  <strong>ABF Assistant</strong
                   ><span>Instantané 24h/24</span>
                 </div>
               </div>
@@ -1375,8 +1371,8 @@
                 "
               >
                 <span data-i18n="contact.chat.tip"
-                  >💡 Pour une réponse immédiate, utilisez notre chatbot
-                  <strong>Cap 221 Assistant</strong> en bas à droite !</span
+                  >💡 Pour une réponse immédiate, utilisez notre assistant
+                  <strong>ABF Assistant</strong> en bas à droite !</span
                 >
               </p>
             </div>
@@ -1569,13 +1565,6 @@
                 </div>
 
                 <!-- Bouton envoi -->
-                <div
-                  id="contactTurnstile"
-                  class="cf-turnstile"
-                  data-sitekey="0x4AAAAAAEsDm12BksBbgsP2"
-                  data-callback="cap221TurnstileCallback"
-                  aria-label="Vérification anti-robot"
-                ></div>
                 <button
                   type="submit"
                   id="cf-submit"
@@ -1736,8 +1725,7 @@
           </div>
           <div class="jm-desc" id="mjDesc">Chargement des informations...</div>
           <button class="jm-ai-btn" onclick="askAIAboutJob()">
-            <i class="fas fa-robot"></i> Demander à Cap 221 Assistant d'en dire
-            plus
+            <i class="fas fa-robot"></i> Demander à ABF Assistant d'en dire plus
           </button>
         </div>
       </div>
@@ -1772,24 +1760,23 @@
             style="margin-top: 1.5rem"
             onclick="askAIToCompare()"
           >
-            <i class="fas fa-robot"></i> Demander à Cap 221 Assistant de les
-            départager
+            <i class="fas fa-robot"></i> Demander à ABF Assistant de les départager
           </button>
         </div>
       </div>
     </div>
 
 
-    <button class="chat-button" id="chatButton" type="button" aria-expanded="false" aria-controls="chatWindow" aria-haspopup="dialog" aria-label="Ouvrir le chat Cap 221 Assistant">
+    <button class="chat-button" id="chatButton" type="button" aria-expanded="false" aria-controls="chatWindow" aria-haspopup="dialog" aria-label="Ouvrir le Chat ABF Assistant Assistant">
       <i class="fas fa-comments"></i>
       <div class="chat-pulse"></div>
     </button>
-    <div class="chat-window" id="chatWindow" role="dialog" aria-label="Chat Cap 221 Assistant" aria-hidden="true">
+    <div class="chat-window" id="chatWindow" role="dialog" aria-label="Chat ABF Assistant" aria-hidden="true">
       <div class="chat-header">
         <div class="chat-header-info">
           <div class="chat-avatar"><i class="fas fa-robot"></i></div>
           <div>
-            <strong data-i18n="chat.name">Cap 221 Assistant</strong>
+            <strong data-i18n="chat.name">ABF Assistant</strong>
             <div class="chat-status">
               <span class="online-dot"></span>
               <span data-i18n="chat.online">En ligne</span>
@@ -1800,7 +1787,7 @@
       </div>
       <div class="chat-messages" id="chatMessages">
         <div class="message bot" data-i18n="chat.welcome">
-          Bonjour ! Je suis Cap 221 Assistant. Je connais toutes les universités
+          Bonjour ! Je suis ABF Assistant Assistant. Je connais toutes les universités
           du Sénégal. Comment puis-je vous aider ? 🎓
         </div>
       </div>
