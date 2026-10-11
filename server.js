@@ -126,11 +126,12 @@ function serveStatic(request, response, pathname) {
     if (!filePath.startsWith(root + path.sep)) return response.writeHead(403).end();
     fs.stat(filePath, (statError, stats) => {
         if (statError || !stats.isFile()) return response.writeHead(404).end('Not found');
-        const isVersionedAsset = /\.(?:css|js|png|jpg|jpeg|svg|webmanifest)$/.test(filePath);
+        const isImage = /\.(?:png|jpg|jpeg|svg|ico|webp)$/.test(filePath);
         response.writeHead(200, {
             'Content-Type': mimeTypes[path.extname(filePath).toLowerCase()] || 'application/octet-stream',
             'X-Content-Type-Options': 'nosniff',
-            'Cache-Control': isVersionedAsset ? 'public, max-age=86400' : 'no-cache'
+            // HTML/SW/JS/CSS : revalidés à chaque visite (pas de versionnage d'URL) ; images : 1 jour.
+            'Cache-Control': isImage ? 'public, max-age=86400' : 'no-cache'
         });
         fs.createReadStream(filePath).pipe(response);
     });
