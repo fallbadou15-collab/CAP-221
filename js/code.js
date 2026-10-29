@@ -46,7 +46,7 @@ let favorites = loadFavorites();
 // 2. THEME SOMBRE
 function initTheme() {
     const isDark = readStorage('cap221_theme') === 'dark';
-    if (isDark) document.body.classList.add('dark-mode');
+    document.body.classList.toggle('dark-mode', isDark);
     updateThemeIcon();
 }
 function toggleTheme() {
@@ -63,6 +63,39 @@ function updateThemeIcon() {
         : '<i class="fas fa-moon"></i>';
     btn.setAttribute('aria-pressed', String(document.body.classList.contains('dark-mode')));
     btn.setAttribute('aria-label', document.body.classList.contains('dark-mode') ? 'Activer le thème clair' : 'Activer le thème sombre');
+}
+
+function initHomeSwiper() {
+    const slider = document.querySelector('.hero-swiper');
+    if (!slider || typeof Swiper !== 'function') return;
+
+    const prefersReducedMotion = window.matchMedia
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    new Swiper(slider, {
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        loop: true,
+        speed: 700,
+        autoplay: prefersReducedMotion ? false : {
+            delay: 5500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        pagination: {
+            el: slider.querySelector('.swiper-pagination'),
+            clickable: true
+        },
+        navigation: {
+            nextEl: slider.querySelector('.swiper-button-next'),
+            prevEl: slider.querySelector('.swiper-button-prev')
+        },
+        a11y: {
+            enabled: true,
+            prevSlideMessage: 'Photo précédente',
+            nextSlideMessage: 'Photo suivante'
+        }
+    });
 }
 
 // 3. NAVIGATION & SCROLL
@@ -273,14 +306,14 @@ window.addEventListener("message", function (a) {
 
 // 5. UNIVERSITES
 const universityDB = [
-    { id: "ucad", name: "UCAD (Université Cheikh Anta Diop)", history: "Fondée en 1957, elle est l'une des plus anciennes et prestigieuses universités d'Afrique. Reconnue pour son excellence académique et la pluralité de ses facultés, l'UCAD est le moteur de la recherche au Sénégal.", formations: "Médecine, Psychologie (FLSH), Droit (FSJP), Informatique (FST)...", career: "Avocats, Médecins, Ingénieurs, Journalistes...", diploma: "Licence, Master, Doctorat, Diplôme d'Ingénieur, Médecine" },
-    { id: "ugb", name: "UGB (Université Gaston Berger)", history: "Créée en 1990 à Saint-Louis, elle est l'université de l'excellence par excellence. Elle mise sur des filières professionnalisantes tournées vers l'innovation et le développement.", formations: "Mathématiques Appliquées, Informatique, Sociologie, Agronomie...", career: "Data Scientists, Experts Agricoles, Magistrats...", diploma: "Licence, Master, Doctorat" },
-    { id: "uadb", name: "UADB (Université Alioune Diop de Bambey)", history: "Créée en 2007 pour décentraliser l'enseignement supérieur et professionnaliser les étudiants dans la santé, l'économie et les tech.", formations: "Santé communautaire, Management, Informatique décisionnelle...", career: "Agents de santé, Chefs de projet, Développeurs...", diploma: "Licence Pro, Master" },
-    { id: "ut", name: "UT (Université de Thiès)", history: "Carrefour de l'ingénierie sénégalaise. Créée en 2007 pour doter le Sénégal d'un pôle d'excellence en ingénierie et agriculture.", formations: "Génie Civil, Ingénierie minière, Sciences agronomiques...", career: "Ingénieurs, Conducteurs de travaux, Infirmiers...", diploma: "Diplôme d'Ingénieur, Licence, Master" },
-    { id: "uasz", name: "UASZ (Université Assane Seck de Ziguinchor)", history: "Ouverte en 2007, porte-étendard en Casamance. Elle favorise le développement régional par le savoir.", formations: "Tourisme, Aménagement du territoire, Agroforesterie...", career: "Guides, Aménageurs, Experts forestiers...", diploma: "Licence, Master, Doctorat" },
-    { id: "ussein", name: "USSEIN (Univ. Sine Saloum El Hadj Ibrahima Niass)", history: "À vocation agricole. Répartie sur Kaolack, Fatick, Kaffrine pour booster le secteur primaire.", formations: "Techniques agricoles, Élevage moderne, Pêche...", career: "Agro-entrepreneurs, Ingénieurs des eaux et forêts...", diploma: "Licence, Master d'Ingénierie Agricole" },
-    { id: "uam", name: "UAM (Université Amadou Mahtar Mbow)", history: "Située à Diamniadio, l'université du futur. Axée sur les STEM pour accompagner l'émergence.", formations: "Architecture moderne, IA, Énergies renouvelables, Big Data...", career: "Architectes, Ingénieurs en IA, Data Analysts...", diploma: "Licence, Master, Ingénieur, Architecte" },
-    { id: "unchk", name: "UNCHK (Université Numérique Cheikh Hamidou Kane)", history: "Révolutionne l'enseignement par le numérique avec les Espaces Numériques Ouverts (ENO).", formations: "E-business, Dév mobile, Multimédia, Droit...", career: "Trafic Managers, Dév Mobile, Juristes numériques...", diploma: "Licence, Master en ligne" }
+    { id: "ucad", name: "UCAD (Université Cheikh Anta Diop)", location: "Dakar · Fann", image: "img/campus-ucad-bibliotheque.jpg", imageAlt: "Bâtiment de la bibliothèque universitaire de l’UCAD, à Dakar", imageCredit: "Rignese · Wikimedia Commons · CC BY-SA 3.0", imageCreditUrl: "https://commons.wikimedia.org/wiki/File:BU_Universit%C3%A9_Chekh_Anta_Diop_de_Dakar.JPG", history: "L’Université de Dakar a été créée en 1957 et porte le nom de Cheikh Anta Diop depuis 1987. Son campus de Fann regroupe plusieurs facultés, écoles et instituts.", formations: "Médecine, Psychologie (FLSH), Droit (FSJP), Informatique (FST)...", career: "Avocats, Médecins, Ingénieurs, Journalistes...", diploma: "Licence, Master, Doctorat, Diplôme d'Ingénieur, Médecine" },
+    { id: "ugb", name: "UGB (Université Gaston Berger)", location: "Saint-Louis", image: "img/campus-ugb-tour.jpg", imageAlt: "Tour de l’Université Gaston Berger à Saint-Louis", imageCredit: "Maissambaye · Wikimedia Commons · domaine public", imageCreditUrl: "https://commons.wikimedia.org/wiki/File:LaTourUGBVueSudOuest.jpg", history: "Créée en 1990 à Saint-Louis, l’Université Gaston Berger propose des formations en sciences, lettres, économie, droit et agronomie.", formations: "Mathématiques Appliquées, Informatique, Sociologie, Agronomie...", career: "Data Scientists, Experts Agricoles, Magistrats...", diploma: "Licence, Master, Doctorat" },
+    { id: "uadb", name: "UADB (Université Alioune Diop de Bambey)", location: "Bambey", history: "Créée en 2007, l’Université Alioune Diop est implantée à Bambey. Elle propose des formations dans plusieurs domaines, notamment la santé, l’économie et l’informatique.", formations: "Santé communautaire, Management, Informatique décisionnelle...", career: "Agents de santé, Chefs de projet, Développeurs...", diploma: "Licence Pro, Master" },
+    { id: "ut", name: "UT (Université de Thiès)", location: "Thiès", history: "L’Université de Thiès regroupe des établissements de formation dans des domaines comme l’ingénierie, l’agriculture et les sciences.", formations: "Génie Civil, Ingénierie minière, Sciences agronomiques...", career: "Ingénieurs, Conducteurs de travaux, Infirmiers...", diploma: "Diplôme d'Ingénieur, Licence, Master" },
+    { id: "uasz", name: "UASZ (Université Assane Seck de Ziguinchor)", location: "Ziguinchor", history: "Ouverte en 2007 à Ziguinchor, l’Université Assane Seck accueille des étudiants de Casamance et d’autres régions du Sénégal.", formations: "Tourisme, Aménagement du territoire, Agroforesterie...", career: "Guides, Aménageurs, Experts forestiers...", diploma: "Licence, Master, Doctorat" },
+    { id: "ussein", name: "USSEIN (Univ. Sine Saloum El Hadj Ibrahima Niass)", location: "Kaolack · Fatick · Kaffrine", history: "L’Université du Sine Saloum El Hadj Ibrahima Niass est organisée autour de plusieurs sites dans les régions de Kaolack, Fatick et Kaffrine.", formations: "Techniques agricoles, Élevage moderne, Pêche...", career: "Agro-entrepreneurs, Ingénieurs des eaux et forêts...", diploma: "Licence, Master d'Ingénierie Agricole" },
+    { id: "uam", name: "UAM (Université Amadou Mahtar Mbow)", location: "Diamniadio", history: "Située à Diamniadio, l’Université Amadou Mahtar Mbow accueille des formations en sciences, technologies, ingénierie et d’autres disciplines.", formations: "Architecture moderne, IA, Énergies renouvelables, Big Data...", career: "Architectes, Ingénieurs en IA, Data Analysts...", diploma: "Licence, Master, Ingénieur, Architecte" },
+    { id: "unchk", name: "UNCHK (Université Numérique Cheikh Hamidou Kane)", location: "Enseignement à distance", history: "L’Université numérique Cheikh Hamidou Kane propose des formations à distance et s’appuie sur des Espaces numériques ouverts (ENO).", formations: "E-business, Dév mobile, Multimédia, Droit...", career: "Trafic Managers, Dév Mobile, Juristes numériques...", diploma: "Licence, Master en ligne" }
 ];
 
 function initUniversities() {
@@ -291,8 +324,11 @@ function initUniversities() {
         const isFav = favorites.univs.some(f => f.id === u.id);
         const card = document.createElement('div');
         card.className = "univ-card reveal";
+        const imageMarkup = u.image
+            ? `<img src="${escapeHTML(u.image)}" alt="${escapeHTML(u.imageAlt)}" loading="lazy"><span class="univ-image-label">${escapeHTML(u.location)}</span><a class="univ-photo-credit" href="${escapeHTML(u.imageCreditUrl)}" target="_blank" rel="noopener noreferrer" aria-label="Crédit photo : ${escapeHTML(u.imageCredit)}">${escapeHTML(u.imageCredit)}</a>`
+            : `<div class="univ-image-placeholder"><strong>${u.id.toUpperCase()}</strong><span>${escapeHTML(u.location)}</span></div>`;
         card.innerHTML = `
-            <div class="univ-img">${u.id.toUpperCase()} <button type="button" class="fav-heart ${isFav ? 'active' : ''}" aria-label="${isFav ? 'Retirer' : 'Ajouter'} ${u.name} ${isFav ? 'des' : 'aux'} favoris" onclick="event.stopPropagation(); toggleFav('univ', '${u.id}', '${u.name}', '')"><i class="fas fa-heart" aria-hidden="true"></i></button></div>
+            <div class="univ-img ${u.image ? 'has-photo' : 'no-photo'}">${imageMarkup}<button type="button" class="fav-heart ${isFav ? 'active' : ''}" aria-label="${isFav ? 'Retirer' : 'Ajouter'} ${u.name} ${isFav ? 'des' : 'aux'} favoris" onclick="event.stopPropagation(); toggleFav('univ', '${u.id}', '${u.name}', '')"><i class="fas fa-heart" aria-hidden="true"></i></button></div>
             <div class="univ-body">
                 <h3><button type="button" class="univ-title-button" onclick="openUnivModal('${u.id}')">${u.name}</button></h3>
                 <p>${u.history}</p>
@@ -936,22 +972,26 @@ const translations = {
     fr: {
         flag: '🇫🇷', code: 'FR', dir: 'ltr', data: {
             'nav.home': 'Accueil', 'nav.univ': 'Universités', 'nav.explore': 'Métiers', 'nav.revisions': 'BAC', 'nav.campusen': 'Campusen', 'nav.concours': 'Concours', 'nav.fav': 'Favoris', 'nav.about': 'À propos', 'nav.contact': 'Contact', 'nav.generator': 'CV & IA', 'lang.label': 'Langues',
-            'hero.eyebrow': 'Orientation scolaire au Sénégal', 'hero.title1': 'Le Cap', 'hero.title2': 'vers la', 'hero.title3': 'Réussite',
-            'hero.sub': "Découvrez les universités du Sénégal, les métiers d'avenir, et préparez-vous avec les sujets officiels du Baccalauréat.",
+            'hero.eyebrow': 'Orientation après le bac au Sénégal', 'hero.title1': 'Choisir sa', 'hero.title2': 'formation', 'hero.title3': 'après le bac',
+            'hero.sub': "Universités, filières, concours et sujets du Bac : des informations réunies pour comparer les options et préparer la suite.",
             'hero.cta1': 'Universités', 'hero.cta3': 'Préparer le BAC', 'hero.cta4': 'Contact', 'hero.search.label': 'Rechercher un métier ou une formation', 'hero.search.placeholder': 'Ex. développeur, médecine, droit…', 'hero.search.button': 'Rechercher', 'hero.scroll': 'Découvrir',
             'hero.badge1': '+90 métiers et formations', 'hero.badge2': 'Sénégal & Monde', 'hero.badge3': 'Sujets BAC Officiels',
             'stats.univ': 'Universités présentées', 'stats.jobs': 'Métiers', 'stats.domains': 'Domaines', 'stats.series': 'Séries BAC', 'stats.free': 'Gratuit',
             'fields.eyebrow': 'Explorez', 'fields.title': 'Secteurs & Facultés', 'fields.sub': 'Sénégal & Monde',
+            'photos.eyebrow': 'Sur les campus', 'photos.title': 'Des lieux d’études', 'photos.em': 'au Sénégal',
+            'photos.ucad.title': 'Bibliothèque de l’UCAD · Dakar', 'photos.ucad.desc': 'Un bâtiment du campus Cheikh Anta Diop.',
+            'photos.library.title': 'Une salle de lecture · UCAD', 'photos.library.desc': 'La bibliothèque universitaire, à Dakar.',
+            'photos.ugb.title': 'UGB · Saint-Louis', 'photos.ugb.desc': 'L’entrée de l’Université Gaston Berger.', 'photos.button': 'Voir les fiches universités',
             'why.eyebrow': 'Pourquoi CAP 221 ?', 'why.title': 'Des repères pour', 'why.em': "l'orientation", 'why.title2': 'au Sénégal',
-            'why.desc': "Fondée par Alioune Badara Fall, CAP 221 combine l'histoire des universités sénégalaises, l'exploration de carrières mondiales avec les ressources officielles du Baccalauréat sénégalais.",
-            'why.f1': 'Repères sur 8 universités du Sénégal', 'why.f2': 'Sujets et corrigés officiels par série', 'why.f3': 'Assistant IA disponible 24h/24', 'why.f4': 'Statistiques nationales du BAC', 'why.btn': 'En savoir plus',
-            'why.c1': 'IA Coach', 'why.c2': 'Universités', 'why.c3': 'Excellence', 'why.c4': 'Instantané',
+            'why.desc': "CAP 221 rassemble des fiches sur les universités, des pistes de métiers et des ressources pour préparer le Bac ou consulter les démarches d’orientation. Pour une inscription ou une date, vérifiez toujours les informations auprès de l’établissement ou du portail officiel.",
+            'why.f1': 'Fiches sur huit universités publiques', 'why.f2': 'Sujets et corrigés du Bac classés par série', 'why.f3': 'Liens vers les portails officiels', 'why.f4': 'Des outils pour préparer son parcours', 'why.btn': 'En savoir plus',
+            'why.sources.title': 'Pour vérifier les démarches', 'why.sources.campusen': 'Admissions et orientation post-bac', 'why.sources.bac': 'Informations et ressources du Bac', 'why.sources.note': 'Les conditions et les dates peuvent évoluer : consultez toujours les annonces officielles.',
             'explore.title': 'Explorer les Métiers', 'explore.sub': 'Utilisez les filtres pour découvrir votre voie idéale à travers les universités.',
             'filter.title': 'Filtres', 'filter.domain': 'Domaine ou Faculté', 'filter.all': 'Tous les domaines', 'filter.spec': 'Spécialité', 'filter.level': 'Études requises', 'filter.alllevels': 'Tous niveaux', 'filter.reset': 'Réinitialiser', 'filter.hint': 'Utilisez les filtres à gauche pour découvrir les métiers qui vous correspondent.',
             'bac.eyebrow': 'Préparez-vous', 'bac.title': "Banque d'Épreuves du Baccalauréat", 'bac.sub': "Sujets officiels et corrigés classés par série (S1, S2, L1', L2, G, ARABE).", 'bac.stats': 'Statistiques Nationales du BAC', 'bac.pending': "Données en cours d'intégration.",
-            'about.title': 'À propos de CAP 221', 'about.desc': "Plateforme créée par <strong>Alioune Badara Fall</strong> pour rendre l'orientation plus claire au Sénégal. Notre mission est de donner à chaque élève des outils simples pour bâtir son avenir avec confiance.",
+            'about.title': 'À propos de CAP 221', 'about.desc': "CAP 221 est une plateforme d’orientation scolaire créée par <strong>Alioune Badara Fall</strong>. Elle rassemble des fiches sur les universités, des ressources pour le Bac et des repères sur les métiers et les concours.",
             'a11y.skip': 'Aller au contenu principal',
-            'universities.title': 'Les Temples du Savoir', 'universities.sub': 'Découvrez 8 universités du Sénégal et accédez au catalogue national pour une liste complète.', 'universities.note': 'Cette sélection n’est pas exhaustive. Informations vérifiées le 22 juillet 2026.', 'universities.official': 'Consulter le catalogue national Campusen',
+            'universities.title': 'Universités publiques du Sénégal', 'universities.sub': 'Huit établissements à découvrir. Comparez les formations et vérifiez les démarches auprès des sources officielles.', 'universities.note': 'Ces fiches donnent des repères. Vérifiez les filières et les conditions d’admission auprès des établissements ou de Campusen.', 'universities.official': 'Consulter le catalogue national Campusen',
             'filter.search.label': 'Rechercher un métier', 'filter.search.placeholder': 'Ex : Médecin, UCAD, Pétrole…', 'compare.selected': 'sélectionnés', 'compare.open': 'Comparer',
             'bac.verified': 'Vérifié le 22 juillet 2026 · Consultez aussi la', 'bac.official': 'source officielle de l’Office du Baccalauréat', 'bac.chart.map': 'Répartition par région (2024)', 'bac.chart.table': 'Admis par région (Détails)', 'bac.chart.gender': 'Admis par genre (2024)', 'bac.chart.rate': "Taux d'admis % (2024)",
             'pomodoro.title': 'Chrono de Révision (Pomodoro)', 'pomodoro.desc': '25 min de travail intensif, 5 min de pause.', 'pomodoro.start': 'Démarrer',
@@ -959,7 +999,7 @@ const translations = {
             'quiz.title': "Test d'Orientation", 'quiz.sub': 'Découvre le domaine fait pour toi en 5 questions rapides.', 'quiz.ready': 'Prêt à trouver ta voie ?', 'quiz.start': 'Commencer le Test', 'quiz.result.title': 'Tes domaines de prédilection :', 'quiz.result.desc': 'Basé sur tes réponses, voici les domaines dans lesquels tu excellerais au Sénégal :', 'quiz.result.cta': 'Explorer ces métiers',
             'campusen.title': 'Guide Campusen & Bourses', 'campusen.sub': "Tout ce qu'il faut savoir pour ton orientation post-bac et le financement de tes études.", 'campusen.steps': 'Étapes Campusen', 'campusen.step1.title': 'Création du compte (INE)', 'campusen.step1.desc': "Ouvre un compte sur orientation.campusen.sn avec ton INE, ta date de naissance et un numéro valide.", 'campusen.step2.title': 'Choix des filières', 'campusen.step2.desc': 'Sélectionne puis classe les formations proposées et vérifie les règles de la campagne sur le portail officiel.', 'campusen.step3.title': 'Validation et Paiement', 'campusen.step3.desc': 'Respecte le délai indiqué, utilise un prestataire agréé et conserve ta quittance.', 'campusen.verified': 'Procédure vérifiée le 22 juillet 2026. Les campagnes peuvent évoluer sans préavis.', 'campusen.open': 'Ouvrir Campusen officiel', 'campusen.scholarships': "Les Bourses d'Études", 'campusen.scholarships.desc': 'Les critères et périodes changent selon chaque appel. Consulte toujours l’annonce officielle.', 'campusen.calls': 'Appels et bourses Campusen', 'campusen.calls.desc': 'Voir les opportunités publiées par le portail national',
             'concours.title': 'Concours et admissions', 'concours.sub': 'Retrouvez les bons points de départ et confirmez toujours les dates auprès de l’établissement.', 'concours.verified': 'Liens vérifiés le 22 juillet 2026. CAP 221 n’affiche plus de date de concours non confirmée.', 'concours.campusen.desc': 'Admissions, formations, bourses et appels à candidatures', 'concours.orientation.desc': 'Dossier et suivi de l’orientation post-bac', 'concours.bac.desc': 'Programmes, épreuves et communiqués officiels',
-            'generator.title': 'Générateur de CV & Lettre', 'generator.sub': 'Laisse ABF Assistant structurer ton CV et rédiger ta lettre en quelques secondes.', 'generator.profile': 'Crée ton profil', 'generator.name.label': 'Prénom et nom', 'generator.name.placeholder': 'Ton Prénom et Nom', 'generator.job.label': 'Métier ou formation visée', 'generator.job.placeholder': "Métier ou Formation visée (Ex : Licence Informatique à l'UCAD)", 'generator.level.label': 'Niveau d’études', 'generator.level.new': 'Nouveau Bachelier', 'generator.level.bac2': 'Étudiant (Bac+2)', 'generator.level.bac3': 'Licence (Bac+3)', 'generator.level.master': 'Master', 'generator.submit': 'Générer mon CV et ma Lettre',
+            'generator.title': 'Générateur de CV & Lettre', 'generator.sub': 'Renseigne ton profil pour créer une première version de CV et de lettre à relire et personnaliser.', 'generator.profile': 'Crée ton profil', 'generator.name.label': 'Prénom et nom', 'generator.name.placeholder': 'Ton Prénom et Nom', 'generator.job.label': 'Métier ou formation visée', 'generator.job.placeholder': "Métier ou Formation visée (Ex : Licence Informatique à l'UCAD)", 'generator.level.label': 'Niveau d’études', 'generator.level.new': 'Nouveau Bachelier', 'generator.level.bac2': 'Étudiant (Bac+2)', 'generator.level.bac3': 'Licence (Bac+3)', 'generator.level.master': 'Master', 'generator.submit': 'Générer mon CV et ma Lettre',
             'about.tag.senegal': '🇸🇳 Made in Sénégal', 'about.tag.world': '🌍 Vision internationale', 'about.tag.careers': '🎓 +90 métiers et formations', 'about.tag.free': '🆓 100% Gratuit', 'modal.info': 'Informations', 'modal.school': 'Établissement / Lieu',
             'favorites.title': 'Mon Espace Favoris', 'favorites.sub': 'Retrouve ici les universités et métiers que tu as sauvegardés.', 'favorites.jobs': 'Mes Métiers Favoris', 'favorites.universities': 'Mes Universités Favorites',
             'contact.title': 'Contactez-moi', 'contact.sub': 'Une question, un partenariat ou un signalement ? Écrivez-moi avec ce formulaire.', 'contact.details': 'Nos coordonnées', 'contact.email': 'Email', 'contact.delay': 'Délais de réponse', 'contact.under24': 'Sous 24h', 'contact.chat.tip': '💡 Pour une réponse immédiate, utilisez notre assistant <strong>ABF Assistant</strong> en bas à droite !', 'contact.form.title': 'Envoyez-moi un message', 'contact.form.sub': 'Remplissez le formulaire ci-dessous, tous les champs * sont obligatoires.', 'contact.firstname': 'Prénom *', 'contact.firstname.placeholder': 'Moussa', 'contact.lastname': 'Nom *', 'contact.lastname.placeholder': 'Diallo', 'contact.email.label': 'Adresse email *', 'contact.email.placeholder': 'vous@exemple.com', 'contact.subject.label': 'Objet du message *', 'contact.subject.choose': '— Choisissez un sujet —', 'contact.subject.orientation': "Question sur l'orientation", 'contact.subject.university': 'Information sur une université', 'contact.subject.technical': 'Problème technique', 'contact.subject.other': 'Autre', 'contact.message.label': 'Votre message *', 'contact.message.placeholder': 'Décrivez votre demande en détail…', 'contact.submit': 'Envoyer le message', 'contact.robot': 'Je ne suis pas un robot', 'form.error.robot': 'Veuillez cocher « Je ne suis pas un robot ».', 'contact.privacy': 'Vos informations sont utilisées uniquement pour répondre à votre demande et sont transmises au service d’acheminement EmailJS.', 'contact.privacy.link': 'En savoir plus', 'form.error.fields': 'Veuillez corriger les champs encadrés en rouge.', 'form.error.tooFast': 'Veuillez prendre quelques secondes pour vérifier votre message.', 'form.error.cooldown': 'Un message vient d’être envoyé. Patientez avant un nouvel envoi.', 'form.error.duplicate': 'Ce message a déjà été envoyé. Inutile de le renvoyer.', 'form.sending': 'Envoi en cours…', 'form.success': 'Message envoyé avec succès ! Un accusé de réception va vous être adressé par email.', 'form.error.send': "Erreur lors de l'envoi.",
@@ -973,22 +1013,26 @@ const translations = {
     en: {
         flag: '🇬🇧', code: 'EN', dir: 'ltr', data: {
             'nav.home': 'Home', 'nav.univ': 'Universities', 'nav.explore': 'Careers', 'nav.revisions': 'BAC', 'nav.campusen': 'Campusen', 'nav.concours': 'Entrance Exams', 'nav.about': 'About', 'nav.contact': 'Contact', 'nav.generator': 'CV & AI', 'lang.label': 'Languages',
-            'hero.eyebrow': 'School guidance in Senegal', 'hero.title1': 'Set Your', 'hero.title2': 'Course for', 'hero.title3': 'Success',
-            'hero.sub': 'Discover universities in Senegal, explore future careers, and prepare with official Baccalaureate papers.',
+            'hero.eyebrow': 'Choosing what to study after the BAC in Senegal', 'hero.title1': 'Choose your', 'hero.title2': 'course', 'hero.title3': 'after the BAC',
+            'hero.sub': 'Universities, courses, entrance exams and BAC papers: practical information to compare your options and plan what comes next.',
             'hero.cta1': 'Universities', 'hero.cta3': 'Prepare for BAC', 'hero.cta4': 'Contact', 'hero.search.label': 'Search for a career or course', 'hero.search.placeholder': 'E.g. developer, medicine, law…', 'hero.search.button': 'Search', 'hero.scroll': 'Discover',
             'hero.badge1': '90+ careers and courses', 'hero.badge2': 'Senegal & Worldwide', 'hero.badge3': 'Official BAC Papers',
             'stats.univ': 'Universities presented', 'stats.jobs': 'Careers', 'stats.series': 'BAC Streams', 'stats.free': 'Free',
             'fields.eyebrow': 'Explore', 'fields.title': 'Sectors & Faculties', 'fields.sub': 'Senegal & Worldwide',
+            'photos.eyebrow': 'On campus', 'photos.title': 'Places to study', 'photos.em': 'in Senegal',
+            'photos.ucad.title': 'UCAD library · Dakar', 'photos.ucad.desc': 'A building on the Cheikh Anta Diop campus.',
+            'photos.library.title': 'A reading room · UCAD', 'photos.library.desc': 'The university library in Dakar.',
+            'photos.ugb.title': 'UGB · Saint-Louis', 'photos.ugb.desc': 'The entrance to Gaston Berger University.', 'photos.button': 'View university profiles',
             'why.eyebrow': 'Why CAP 221?', 'why.title': 'Useful resources for', 'why.em': 'career guidance', 'why.title2': 'in Senegal',
-            'why.desc': 'Created by Alioune Badara Fall, CAP 221 combines information about Senegalese universities, worldwide careers and official BAC resources.',
-            'why.f1': 'Guidance on 8 Senegalese universities', 'why.f2': 'Official papers and solutions by stream', 'why.f3': 'AI assistant available 24/7', 'why.f4': 'National BAC statistics', 'why.btn': 'Learn more',
-            'why.c1': 'AI Coach', 'why.c2': 'Universities', 'why.c3': 'Excellence', 'why.c4': 'Instant',
+            'why.desc': 'CAP 221 brings together university profiles, career ideas and resources for preparing for the BAC or checking guidance procedures. Always confirm admissions and dates with the institution or official portal.',
+            'why.f1': 'Profiles of eight public universities', 'why.f2': 'BAC papers and solutions by stream', 'why.f3': 'Links to official portals', 'why.f4': 'Tools to help plan your studies', 'why.btn': 'Learn more',
+            'why.sources.title': 'Check official procedures', 'why.sources.campusen': 'Admissions and post-BAC guidance', 'why.sources.bac': 'BAC information and resources', 'why.sources.note': 'Requirements and dates may change. Always check official announcements.',
             'explore.title': 'Explore Careers', 'explore.sub': 'Use the filters to find your ideal path through universities.',
             'filter.title': 'Filters', 'filter.domain': 'Field or Faculty', 'filter.all': 'All fields', 'filter.spec': 'Specialty', 'filter.level': 'Required studies', 'filter.alllevels': 'All levels', 'filter.reset': 'Reset', 'filter.hint': 'Use the filters to discover careers that suit you.',
             'bac.eyebrow': 'Get ready', 'bac.title': 'Baccalaureate Paper Bank', 'bac.sub': 'Official papers and solutions organized by stream.', 'bac.stats': 'National BAC Statistics', 'bac.pending': 'Data being added.',
-            'about.title': 'About CAP 221', 'about.desc': 'A platform created by <strong>Alioune Badara Fall</strong> to transform career guidance in Senegal. Our mission is to give every student the tools to build their future with confidence.',
+            'about.title': 'About CAP 221', 'about.desc': 'CAP 221 is a school guidance platform created by <strong>Alioune Badara Fall</strong>. It brings together university profiles, BAC resources and information about careers and entrance exams.',
             'a11y.skip': 'Skip to main content',
-            'universities.title': 'Places of Knowledge', 'universities.sub': 'Discover 8 universities in Senegal and access the national catalogue for the full list.', 'universities.note': 'This selection is not exhaustive. Information checked on 22 July 2026.', 'universities.official': 'Open the national Campusen catalogue',
+            'universities.title': 'Public universities in Senegal', 'universities.sub': 'Explore eight institutions. Compare courses and confirm procedures with official sources.', 'universities.note': 'These profiles are a starting point. Check courses and admission requirements with each institution or Campusen.', 'universities.official': 'Open the national Campusen catalogue',
             'filter.search.label': 'Search for a career', 'filter.search.placeholder': 'E.g. Doctor, UCAD, Oil…', 'compare.selected': 'selected', 'compare.open': 'Compare',
             'bac.verified': 'Checked on 22 July 2026 · Also consult the', 'bac.official': 'official Baccalaureate Office source', 'bac.chart.map': 'Results by region (2024)', 'bac.chart.table': 'Successful candidates by region (Details)', 'bac.chart.gender': 'Successful candidates by gender (2024)', 'bac.chart.rate': 'Success rate % (2024)',
             'pomodoro.title': 'Study Timer (Pomodoro)', 'pomodoro.desc': '25 minutes of focused work, 5 minutes of rest.', 'pomodoro.start': 'Start',
@@ -996,7 +1040,7 @@ const translations = {
             'quiz.title': 'Career Guidance Test', 'quiz.sub': 'Find a field that suits you with 5 quick questions.', 'quiz.ready': 'Ready to find your path?', 'quiz.start': 'Start the Test', 'quiz.result.title': 'Your strongest fields:', 'quiz.result.desc': 'Based on your answers, these fields may suit you in Senegal:', 'quiz.result.cta': 'Explore these careers',
             'campusen.title': 'Campusen & Scholarships Guide', 'campusen.sub': 'What you need to know about post-BAC guidance and funding your studies.', 'campusen.steps': 'Campusen Steps', 'campusen.step1.title': 'Create your account (INE)', 'campusen.step1.desc': 'Open an account on orientation.campusen.sn with your INE, date of birth and a valid phone number.', 'campusen.step2.title': 'Choose your courses', 'campusen.step2.desc': 'Select and rank the courses offered, then check the current campaign rules on the official portal.', 'campusen.step3.title': 'Validation and Payment', 'campusen.step3.desc': 'Respect the deadline, use an approved payment provider and keep your receipt.', 'campusen.verified': 'Procedure checked on 22 July 2026. Campaigns may change without notice.', 'campusen.open': 'Open official Campusen', 'campusen.scholarships': 'Scholarships', 'campusen.scholarships.desc': 'Criteria and application periods vary. Always consult the official announcement.', 'campusen.calls': 'Campusen calls and scholarships', 'campusen.calls.desc': 'View opportunities published by the national portal',
             'concours.title': 'Entrance exams and admissions', 'concours.sub': 'Use these official starting points and always confirm dates with the institution.', 'concours.verified': 'Links checked on 22 July 2026. CAP 221 no longer displays unconfirmed exam dates.', 'concours.campusen.desc': 'Admissions, courses, scholarships and calls for applications', 'concours.orientation.desc': 'Post-BAC application and guidance tracking', 'concours.bac.desc': 'Official programmes, papers and announcements',
-            'generator.title': 'CV & Cover Letter Generator', 'generator.sub': 'Let ABF Assistant structure your CV and draft your letter in seconds.', 'generator.profile': 'Create your profile', 'generator.name.label': 'Full name', 'generator.name.placeholder': 'Your full name', 'generator.job.label': 'Target career or course', 'generator.job.placeholder': 'Target career or course', 'generator.level.label': 'Education level', 'generator.level.new': 'New BAC graduate', 'generator.level.bac2': 'Student (BAC+2)', 'generator.level.bac3': 'Bachelor degree (BAC+3)', 'generator.level.master': 'Master', 'generator.submit': 'Generate my CV and Letter',
+            'generator.title': 'CV & Cover Letter Generator', 'generator.sub': 'Enter your profile to create a first draft of your CV and cover letter, then review and tailor it.', 'generator.profile': 'Create your profile', 'generator.name.label': 'Full name', 'generator.name.placeholder': 'Your full name', 'generator.job.label': 'Target career or course', 'generator.job.placeholder': 'Target career or course', 'generator.level.label': 'Education level', 'generator.level.new': 'New BAC graduate', 'generator.level.bac2': 'Student (BAC+2)', 'generator.level.bac3': 'Bachelor degree (BAC+3)', 'generator.level.master': 'Master', 'generator.submit': 'Generate my CV and Letter',
             'about.tag.senegal': '🇸🇳 Made in Senegal', 'about.tag.world': '🌍 International outlook', 'about.tag.careers': '🎓 90+ careers and courses', 'about.tag.free': '🆓 100% Free', 'modal.info': 'Information', 'modal.school': 'Institution / Location',
             'favorites.title': 'My Favourites', 'favorites.sub': 'Find your saved universities and careers here.', 'favorites.jobs': 'Favourite Careers', 'favorites.universities': 'Favourite Universities',
             'contact.title': 'Contact me', 'contact.sub': 'A question, partnership or issue? Send me a message.', 'contact.details': 'Contact details', 'contact.email': 'Email', 'contact.delay': 'Response time', 'contact.under24': 'Within 24 hours', 'contact.chat.tip': '💡 For an immediate answer, use <strong>ABF Assistant</strong> at the bottom right.', 'contact.form.title': 'Send me a message', 'contact.form.sub': 'Complete the form below. All fields marked * are required.', 'contact.firstname': 'First name *', 'contact.firstname.placeholder': 'Moussa', 'contact.lastname': 'Last name *', 'contact.lastname.placeholder': 'Diallo', 'contact.email.label': 'Email address *', 'contact.email.placeholder': 'you@example.com', 'contact.subject.label': 'Message subject *', 'contact.subject.choose': '— Choose a subject —', 'contact.subject.orientation': 'Career guidance question', 'contact.subject.university': 'University information', 'contact.subject.technical': 'Technical issue', 'contact.subject.other': 'Other', 'contact.message.label': 'Your message *', 'contact.message.placeholder': 'Describe your request in detail…', 'contact.submit': 'Send message', 'contact.robot': 'I am not a robot', 'form.error.robot': 'Please check "I am not a robot".', 'contact.privacy': 'Your information is used only to answer your request and is transmitted through EmailJS.', 'contact.privacy.link': 'Learn more', 'form.error.fields': 'Please correct the fields outlined in red.', 'form.error.tooFast': 'Please take a few seconds to check your message.', 'form.error.cooldown': 'A message was just sent. Please wait before sending another.', 'form.error.duplicate': 'This message has already been sent. You do not need to resend it.', 'form.sending': 'Sending…', 'form.success': 'Message sent successfully! A confirmation will be emailed to you.', 'form.error.send': 'The message could not be sent.',
@@ -1009,22 +1053,26 @@ const translations = {
     wo: {
         flag: '🇸🇳', code: 'WO', dir: 'ltr', data: {
             'nav.home': 'Dalal', 'nav.univ': 'Daara yu kawe', 'nav.explore': 'Liggeey yi', 'nav.revisions': 'BAC', 'nav.campusen': 'Campusen', 'nav.concours': 'Konkuru yi', 'nav.about': 'Ci mbirum', 'nav.contact': 'Jokkoo', 'nav.generator': 'CV ak IA', 'lang.label': 'Làkk yi',
-            'hero.eyebrow': 'Ndigalu njàng ci Senegaal', 'hero.title1': 'Jël sa', 'hero.title2': 'yoon jëm ci', 'hero.title3': 'Ndam',
-            'hero.sub': 'Xam daara yu kawe yi ci Senegaal, liggeey yi ëllëg, te waajal BAC bi ak ay sujet yu dëggu.',
+            'hero.eyebrow': 'Tànneefu njàng gannaaw BAC ci Senegaal', 'hero.title1': 'Tànnal sa', 'hero.title2': 'yoonu', 'hero.title3': 'njàng gannaaw BAC',
+            'hero.sub': 'Daara yu kawe, njàng, konkuru ak sujetu BAC: xibaar ngir méngale sa yoon yi te waajal li ëllëg.',
             'hero.cta1': 'Daara yu kawe', 'hero.cta3': 'Waajal BAC', 'hero.cta4': 'Jokkoo', 'hero.search.label': 'Seet liggeey walla njàng', 'hero.search.placeholder': 'Misaal: developër, paj, yoon…', 'hero.search.button': 'Seet', 'hero.scroll': 'Gis lu ëpp',
             'hero.badge1': '90+ liggeey ak njàng', 'hero.badge2': 'Senegaal ak Àdduna', 'hero.badge3': 'Sujet BAC yu dëggu',
             'stats.univ': 'Daara yi ñu wone', 'stats.jobs': 'Liggeey yi', 'stats.series': 'Sëri BAC yi', 'stats.free': 'Doŋŋ',
             'fields.eyebrow': 'Seetlu', 'fields.title': 'Wàll yi ak Fakulte yi', 'fields.sub': 'Senegaal ak Àdduna',
+            'photos.eyebrow': 'Ci daara yi', 'photos.title': 'Béréb yi ñuy jàng', 'photos.em': 'ci Senegaal',
+            'photos.ucad.title': 'Bibliothèque UCAD · Dakar', 'photos.ucad.desc': 'Benn kër ci campus Cheikh Anta Diop.',
+            'photos.library.title': 'Bérébu jàng · UCAD', 'photos.library.desc': 'Bibliothèque universitaire ci Dakar.',
+            'photos.ugb.title': 'UGB · Saint-Louis', 'photos.ugb.desc': 'Bunt universitetu Gaston Berger.', 'photos.button': 'Gis xibaaru daara yi',
             'why.eyebrow': 'Lu tax CAP 221?', 'why.title': 'Dencukaayu', 'why.em': 'orientation', 'why.title2': 'ci Senegaal',
-            'why.desc': 'Alioune Badara Fall moo sos CAP 221 ngir boole xibaaru daara yu kawe yi, liggeey yi ci àdduna ak jumtukaayu BAC yu dëggu.',
-            'why.f1': 'Xibaar ci 8 daara yu kawe ci Senegaal', 'why.f2': 'Sujet ak saafara yu dëggu ci bépp sëri', 'why.f3': 'Ndimbal IA guddi ak bëccëg', 'why.f4': 'Lim yu réew mi ci BAC', 'why.btn': 'Xam lu ëpp',
-            'why.c1': 'Ndigal-kat IA', 'why.c2': 'Daara yu kawe', 'why.c3': 'Njariñ', 'why.c4': 'Gaaw',
+            'why.desc': 'CAP 221 dajale na xibaar ci daara yu kawe, liggeey yi ak jumtukaay ngir waajal BAC bi te xam yooni orientation. Seetal xibaaru admission ak dates ci daara bi walla portail bu officiel.',
+            'why.f1': 'Xibaar ci juróom ñett daara yu kawe', 'why.f2': 'Sujet ak saafara yu BAC ci bépp sëri', 'why.f3': 'Lëkkalekaay ci portail yu officiel', 'why.f4': 'Jumtukaay ngir waajal sa yoonu njàng', 'why.btn': 'Xam lu ëpp',
+            'why.sources.title': 'Seetal yoon yi ci portail yi', 'why.sources.campusen': 'Admission ak orientation gannaaw BAC', 'why.sources.bac': 'Xibaar ak jumtukaayu BAC', 'why.sources.note': 'Sart yi ak dates yi mën nañu soppeeku. Seetal xibaar yu officiel.',
             'explore.title': 'Seetlu Liggeey yi', 'explore.sub': 'Jëfandikoo filtër yi ngir gis yoon wi la gën a méngoo.',
             'filter.title': 'Filtër yi', 'filter.domain': 'Wàll walla Fakulte', 'filter.all': 'Wàll yépp', 'filter.spec': 'Spesiyalite', 'filter.level': 'Jàng bi war', 'filter.alllevels': 'Tolluwaay yépp', 'filter.reset': 'Tambaliwaat', 'filter.hint': 'Jëfandikoo filtër yi ngir gis liggeey yi la méngoo.',
             'bac.eyebrow': 'Waajal sa bopp', 'bac.title': 'Dencukaayu Sujet BAC', 'bac.sub': 'Sujet ak saafara yu dëggu, ñu séddale leen ci sëri yi.', 'bac.stats': 'Lim yu réew mi ci BAC', 'bac.pending': 'Ñuy dugal done yi.',
-            'about.title': 'Ci mbirum CAP 221', 'about.desc': '<strong>Alioune Badara Fall</strong> moo sos dencukaay bii ngir soppi orientation ci Senegaal. Sunu yéene mooy jox bépp ndongo jumtukaay yi mu soxla ngir tabax ëllëgam.',
+            'about.title': 'Ci mbirum CAP 221', 'about.desc': 'CAP 221 ab plateforme orientation la, <strong>Alioune Badara Fall</strong> moo ko sos. Dafa boole xibaar ci daara yu kawe, jumtukaayu BAC, liggeey ak konkuru.',
             'a11y.skip': 'Dem ci ëmbiit li',
-            'universities.title': 'Daara yu kawe yi', 'universities.sub': 'Xam 8 daara yu kawe ci Senegaal te ubbi katalogu réew mi ngir gis lépp.', 'universities.note': 'Lii du lim bu mat. Ñu seet xibaar yi 22 sullet 2026.', 'universities.official': 'Ubbi katalogu Campusen bu réew mi',
+            'universities.title': 'Daara yu kawe yu réew mi', 'universities.sub': 'Xam juróom ñett daara. Méngale njàng yi te seetal yoon yi ci xibaar yu officiel.', 'universities.note': 'Xibaar yii ay ndimbal lañu. Seetal njàng yi ak sart admission ci daara bi walla Campusen.', 'universities.official': 'Ubbi katalogu Campusen bu réew mi',
             'filter.search.label': 'Seet ab liggeey', 'filter.search.placeholder': 'Misaal: Doktoor, UCAD, petorol…', 'compare.selected': 'tànn', 'compare.open': 'Méngale',
             'bac.verified': 'Ñu seet ko 22 sullet 2026 · Seetal itam', 'bac.official': 'dencukaayu Office du Baccalauréat bi', 'bac.chart.map': 'Séddale ci gox yi (2024)', 'bac.chart.table': 'Ñi jaar ci gox yi', 'bac.chart.gender': 'Ñi jaar ci góor ak jigéen (2024)', 'bac.chart.rate': 'Tolluwaayu ñi jaar % (2024)',
             'pomodoro.title': 'Waxtuwaayu njàng (Pomodoro)', 'pomodoro.desc': '25 simili njàng, 5 simili noppalu.', 'pomodoro.start': 'Tambali',
@@ -1032,7 +1080,7 @@ const translations = {
             'quiz.title': 'Testu Ndigalu Jàng', 'quiz.sub': 'Gis wàll wi la méngoo ci 5 laaj yu gaaw.', 'quiz.ready': 'Ndax pare nga ngir gis sa yoon?', 'quiz.start': 'Tambali test bi', 'quiz.result.title': 'Wàll yi la gën a méngoo:', 'quiz.result.desc': 'Ci sa tontu yi, wàll yii mën nañu la méngoo ci Senegaal:', 'quiz.result.cta': 'Seet liggeey yii',
             'campusen.title': 'Téere Campusen ak burs yi', 'campusen.sub': 'Li nga war a xam ci orientation ginnaaw BAC ak xaalisu njàng.', 'campusen.steps': 'Tànki Campusen', 'campusen.step1.title': 'Ubbi kont (INE)', 'campusen.step1.desc': 'Ubbi kont ci orientation.campusen.sn ak sa INE, bésu juddu ak nimero telefon bu baax.', 'campusen.step2.title': 'Tànn njàng yi', 'campusen.step2.desc': 'Tànn te toftale njàng yi, te seet sàrtu kampaň bi ci dalu ofisiyel bi.', 'campusen.step3.title': 'Wóoral ak fey', 'campusen.step3.desc': 'Sàmm waxtu wi, jëfandikoo ab feykat bu ñu nangu te denc sa quittance.', 'campusen.verified': 'Ñu seet yoon wi 22 sullet 2026. Kampaň yi mën nañu soppi.', 'campusen.open': 'Ubbi Campusen ofisiyel', 'campusen.scholarships': 'Bursu njàng yi', 'campusen.scholarships.desc': 'Sàrt ak jamonoy kandidaatur dañuy soppi. Seetal yégle ofisiyel bi.', 'campusen.calls': 'Yégle ak bursu Campusen', 'campusen.calls.desc': 'Gis li dalu réew mi siiwal',
             'concours.title': 'Konkuru ak dugg', 'concours.sub': 'Jëfandikool dëkkuwaay yu wóor yii te dëggal bés yi ci daara ji.', 'concours.verified': 'Ñu seet lëkkalekaay yi 22 sullet 2026. CAP 221 du wone bés bu kenn wóoralul.', 'concours.campusen.desc': 'Dugg, njàng, burs ak kandidaatur', 'concours.orientation.desc': 'Dosye ak toppandoo orientation ginnaaw BAC', 'concours.bac.desc': 'Porogaraam, sujet ak yégle yu ofisiyel',
-            'generator.title': 'Defarkatu CV ak bataaxal', 'generator.sub': 'Bayyi ABF Assistant mu taxawal sa CV ak sa bataaxal.', 'generator.profile': 'Defar sa profil', 'generator.name.label': 'Tur ak sant', 'generator.name.placeholder': 'Sa tur ak sant', 'generator.job.label': 'Liggeey walla njàng bi nga bëgg', 'generator.job.placeholder': 'Liggeey walla njàng bi nga bëgg', 'generator.level.label': 'Tolluwaayu njàng', 'generator.level.new': 'Ku bees ci BAC', 'generator.level.bac2': 'Ndongo (Bac+2)', 'generator.level.bac3': 'Licence (Bac+3)', 'generator.level.master': 'Master', 'generator.submit': 'Defar sama CV ak bataaxal',
+            'generator.title': 'Defarkatu CV ak bataaxal', 'generator.sub': 'Dugal sa xibaar ngir defar CV ak bataaxal bu njëkk, nga seetal leen te soppi leen.', 'generator.profile': 'Defar sa profil', 'generator.name.label': 'Tur ak sant', 'generator.name.placeholder': 'Sa tur ak sant', 'generator.job.label': 'Liggeey walla njàng bi nga bëgg', 'generator.job.placeholder': 'Liggeey walla njàng bi nga bëgg', 'generator.level.label': 'Tolluwaayu njàng', 'generator.level.new': 'Ku bees ci BAC', 'generator.level.bac2': 'Ndongo (Bac+2)', 'generator.level.bac3': 'Licence (Bac+3)', 'generator.level.master': 'Master', 'generator.submit': 'Defar sama CV ak bataaxal',
             'about.tag.senegal': '🇸🇳 Defar ci Senegaal', 'about.tag.world': '🌍 Xalaat bu àdduna', 'about.tag.careers': '🎓 90+ liggeey ak njàng', 'about.tag.free': '🆓 Doŋŋ', 'modal.info': 'Xibaar', 'modal.school': 'Daara / Bérab',
             'favorites.title': 'Samay Tànn', 'favorites.sub': 'Gis fii daara ak liggeey yi nga denc.', 'favorites.jobs': 'Liggeey yi ma tànn', 'favorites.universities': 'Daara yi ma tànn',
             'contact.title': 'Jokkoo ak man', 'contact.sub': 'Am nga laaj, partenariya walla jafe-jafe? Yonnee ma bataaxal.', 'contact.details': 'Sunu jokkoo', 'contact.email': 'Email', 'contact.delay': 'Waxtuw tontu', 'contact.under24': 'Ci lu ëpp 24 waxtu', 'contact.chat.tip': '💡 Ngir tontu bu gaaw, jëfandikool <strong>ABF Assistant</strong> ci suuf.', 'contact.form.title': 'Yonnee ma bataaxal', 'contact.form.sub': 'Fésal form bi. Bépp wàll bu am * war na fees.', 'contact.firstname': 'Tur *', 'contact.firstname.placeholder': 'Moussa', 'contact.lastname': 'Sant *', 'contact.lastname.placeholder': 'Diallo', 'contact.email.label': 'Adres email *', 'contact.email.placeholder': 'yow@misaal.com', 'contact.subject.label': 'Mbirum bataaxal *', 'contact.subject.choose': '— Tànnal mbir —', 'contact.subject.orientation': 'Laaj ci orientation', 'contact.subject.university': 'Xibaar ci daara ju kawe', 'contact.subject.technical': 'Jafe-jafe teknig', 'contact.subject.other': 'Leneen', 'contact.message.label': 'Sa bataaxal *', 'contact.message.placeholder': 'Waxal sa laaj bu leer…', 'contact.submit': 'Yonnee bataaxal', 'contact.privacy': 'Ñuy jëfandikoo sa xibaar ngir tontu la rekk, te EmailJS moo koy yóbbu.', 'contact.privacy.link': 'Xam lu ëpp', 'form.error.fields': 'Jubbantil wàll yi am xàmmeefu xonq.', 'form.error.tooFast': 'Jëlal tuuti waxtu ngir seet sa bataaxal.', 'form.error.cooldown': 'Bataaxal bu njëkk bi dem na. Xaaral bala ngay yónnee beneen.', 'form.error.duplicate': 'Bataaxal bii demoon na ba noppi.', 'form.sending': 'Mi ngi dem…', 'form.success': 'Bataaxal bi dem na! Dinga jot dëggal ci email.', 'form.error.send': 'Bataaxal bi mënu koo yónnee.',
@@ -1045,22 +1093,26 @@ const translations = {
     ar: {
         flag: '🇸🇦', code: 'AR', dir: 'rtl', data: {
             'nav.home': 'الرئيسية', 'nav.univ': 'الجامعات', 'nav.explore': 'المهن', 'nav.revisions': 'البكالوريا', 'nav.campusen': 'كامبوسين', 'nav.concours': 'المسابقات', 'nav.about': 'من نحن', 'nav.contact': 'اتصل بنا', 'nav.generator': 'السيرة والذكاء الاصطناعي', 'lang.label': 'اللغات',
-            'hero.eyebrow': 'التوجيه الدراسي في السنغال', 'hero.title1': 'طريقك', 'hero.title2': 'نحو', 'hero.title3': 'النجاح',
-            'hero.sub': 'اكتشف جامعات السنغال ومهن المستقبل واستعد بمواضيع البكالوريا الرسمية.',
+            'hero.eyebrow': 'التوجيه بعد البكالوريا في السنغال', 'hero.title1': 'اختر', 'hero.title2': 'تخصصك', 'hero.title3': 'بعد البكالوريا',
+            'hero.sub': 'جامعات وتخصصات ومسابقات ومواضيع البكالوريا: معلومات تساعدك على مقارنة الخيارات والاستعداد للخطوة التالية.',
             'hero.cta1': 'الجامعات', 'hero.cta3': 'الاستعداد للبكالوريا', 'hero.cta4': 'اتصل بنا', 'hero.search.label': 'ابحث عن مهنة أو تخصص', 'hero.search.placeholder': 'مثال: البرمجة، الطب، القانون…', 'hero.search.button': 'بحث', 'hero.scroll': 'اكتشف',
             'hero.badge1': '+90 مهنة وتخصصاً', 'hero.badge2': 'السنغال والعالم', 'hero.badge3': 'مواضيع بكالوريا رسمية',
             'stats.univ': 'الجامعات المعروضة', 'stats.jobs': 'المهن', 'stats.series': 'شُعب البكالوريا', 'stats.free': 'مجاني',
             'fields.eyebrow': 'استكشف', 'fields.title': 'القطاعات والكليات', 'fields.sub': 'السنغال والعالم',
+            'photos.eyebrow': 'في الحرم الجامعي', 'photos.title': 'أماكن الدراسة', 'photos.em': 'في السنغال',
+            'photos.ucad.title': 'مكتبة جامعة الشيخ أنتا ديوب · داكار', 'photos.ucad.desc': 'مبنى في حرم جامعة الشيخ أنتا ديوب.',
+            'photos.library.title': 'قاعة مطالعة · الجامعة', 'photos.library.desc': 'المكتبة الجامعية في داكار.',
+            'photos.ugb.title': 'جامعة غاستون بيرجي · سانت لويس', 'photos.ugb.desc': 'مدخل جامعة غاستون بيرجي.', 'photos.button': 'عرض ملفات الجامعات',
             'why.eyebrow': 'لماذا CAP 221؟', 'why.title': 'مرجع', 'why.em': 'التوجيه', 'why.title2': 'في السنغال',
-            'why.desc': 'أنشأ عليون بدارا فال CAP 221 للجمع بين معلومات الجامعات السنغالية والمهن العالمية وموارد البكالوريا الرسمية.',
-            'why.f1': 'معلومات عن 8 جامعات سنغالية', 'why.f2': 'مواضيع وتصحيحات رسمية حسب الشعبة', 'why.f3': 'مساعد ذكي متاح على مدار الساعة', 'why.f4': 'إحصاءات البكالوريا الوطنية', 'why.btn': 'اعرف المزيد',
-            'why.c1': 'مرشد ذكي', 'why.c2': 'الجامعات', 'why.c3': 'التميز', 'why.c4': 'فوري',
+            'why.desc': 'يجمع CAP 221 معلومات عن الجامعات ومجالات العمل وموارد الاستعداد للبكالوريا وإجراءات التوجيه. تحقّق دائمًا من شروط القبول والمواعيد لدى المؤسسة أو البوابة الرسمية.',
+            'why.f1': 'معلومات عن ثماني جامعات حكومية', 'why.f2': 'مواضيع البكالوريا حسب الشعبة', 'why.f3': 'روابط إلى البوابات الرسمية', 'why.f4': 'أدوات للتخطيط للدراسة', 'why.btn': 'اعرف المزيد',
+            'why.sources.title': 'تحقّق من الإجراءات الرسمية', 'why.sources.campusen': 'القبول والتوجيه بعد البكالوريا', 'why.sources.bac': 'معلومات وموارد البكالوريا', 'why.sources.note': 'قد تتغير الشروط والمواعيد. راجع دائمًا الإعلانات الرسمية.',
             'explore.title': 'استكشف المهن', 'explore.sub': 'استخدم المرشحات لاكتشاف المسار الأنسب لك عبر الجامعات.',
             'filter.title': 'المرشحات', 'filter.domain': 'المجال أو الكلية', 'filter.all': 'كل المجالات', 'filter.spec': 'التخصص', 'filter.level': 'الدراسة المطلوبة', 'filter.alllevels': 'كل المستويات', 'filter.reset': 'إعادة الضبط', 'filter.hint': 'استخدم المرشحات لاكتشاف المهن المناسبة لك.',
             'bac.eyebrow': 'استعد', 'bac.title': 'بنك مواضيع البكالوريا', 'bac.sub': 'مواضيع وتصحيحات رسمية مرتبة حسب الشعبة.', 'bac.stats': 'إحصاءات البكالوريا الوطنية', 'bac.pending': 'جارٍ إدخال البيانات.',
-            'about.title': 'حول CAP 221', 'about.desc': 'منصة أنشأها <strong>عليون بدارا فال</strong> لتطوير التوجيه في السنغال. مهمتنا منح كل طالب الأدوات اللازمة لبناء مستقبله بثقة.',
+            'about.title': 'حول CAP 221', 'about.desc': 'CAP 221 منصة للتوجيه الدراسي أنشأها <strong>عليون بدارا فال</strong>. تجمع معلومات عن الجامعات وموارد البكالوريا والمهن والمسابقات.',
             'a11y.skip': 'الانتقال إلى المحتوى الرئيسي',
-            'universities.title': 'منارات المعرفة', 'universities.sub': 'اكتشف 8 جامعات في السنغال وادخل إلى الدليل الوطني للاطلاع على القائمة الكاملة.', 'universities.note': 'هذه القائمة غير شاملة. تم التحقق من المعلومات في 22 يوليو 2026.', 'universities.official': 'فتح دليل Campusen الوطني',
+            'universities.title': 'الجامعات الحكومية في السنغال', 'universities.sub': 'تعرّف على ثماني مؤسسات. قارن التخصصات وتحقّق من الإجراءات لدى المصادر الرسمية.', 'universities.note': 'هذه المعلومات تمهيدية. راجع التخصصات وشروط القبول لدى المؤسسة أو Campusen.', 'universities.official': 'فتح دليل Campusen الوطني',
             'filter.search.label': 'البحث عن مهنة', 'filter.search.placeholder': 'مثال: طبيب، UCAD، بترول…', 'compare.selected': 'محددتان', 'compare.open': 'مقارنة',
             'bac.verified': 'تم التحقق في 22 يوليو 2026 · راجع أيضاً', 'bac.official': 'المصدر الرسمي لمكتب البكالوريا', 'bac.chart.map': 'التوزيع حسب المنطقة (2024)', 'bac.chart.table': 'الناجحون حسب المنطقة (التفاصيل)', 'bac.chart.gender': 'الناجحون حسب الجنس (2024)', 'bac.chart.rate': 'نسبة النجاح % (2024)',
             'pomodoro.title': 'مؤقت المراجعة (Pomodoro)', 'pomodoro.desc': '25 دقيقة عمل مركز و5 دقائق راحة.', 'pomodoro.start': 'ابدأ',
@@ -1068,7 +1120,7 @@ const translations = {
             'quiz.title': 'اختبار التوجيه', 'quiz.sub': 'اكتشف المجال المناسب لك في 5 أسئلة سريعة.', 'quiz.ready': 'هل أنت مستعد لاكتشاف مسارك؟', 'quiz.start': 'ابدأ الاختبار', 'quiz.result.title': 'مجالاتك المفضلة:', 'quiz.result.desc': 'بناءً على إجاباتك، قد تناسبك هذه المجالات في السنغال:', 'quiz.result.cta': 'استكشف هذه المهن',
             'campusen.title': 'دليل Campusen والمنح', 'campusen.sub': 'ما تحتاج إلى معرفته عن التوجيه بعد البكالوريا وتمويل الدراسة.', 'campusen.steps': 'مراحل Campusen', 'campusen.step1.title': 'إنشاء الحساب (INE)', 'campusen.step1.desc': 'أنشئ حساباً على orientation.campusen.sn باستعمال رقم INE وتاريخ الميلاد ورقم هاتف صالح.', 'campusen.step2.title': 'اختيار التخصصات', 'campusen.step2.desc': 'اختر التخصصات ورتبها وتحقق من قواعد الحملة الحالية في البوابة الرسمية.', 'campusen.step3.title': 'التأكيد والدفع', 'campusen.step3.desc': 'احترم الموعد واستعمل وسيلة دفع معتمدة واحتفظ بالإيصال.', 'campusen.verified': 'تم التحقق من الإجراء في 22 يوليو 2026. قد تتغير الحملات دون إشعار.', 'campusen.open': 'فتح Campusen الرسمي', 'campusen.scholarships': 'المنح الدراسية', 'campusen.scholarships.desc': 'تختلف الشروط والفترات حسب كل إعلان. راجع الإعلان الرسمي دائماً.', 'campusen.calls': 'إعلانات ومنح Campusen', 'campusen.calls.desc': 'عرض الفرص المنشورة في البوابة الوطنية',
             'concours.title': 'المسابقات والقبول', 'concours.sub': 'ابدأ بهذه المصادر الرسمية وتأكد دائماً من المواعيد لدى المؤسسة.', 'concours.verified': 'تم التحقق من الروابط في 22 يوليو 2026. لا يعرض CAP 221 مواعيد غير مؤكدة.', 'concours.campusen.desc': 'القبول والتخصصات والمنح وإعلانات الترشح', 'concours.orientation.desc': 'ملف ومتابعة التوجيه بعد البكالوريا', 'concours.bac.desc': 'البرامج والاختبارات والإعلانات الرسمية',
-            'generator.title': 'منشئ السيرة والرسالة', 'generator.sub': 'دع ABF Assistant ينظم سيرتك ويكتب رسالتك خلال ثوان.', 'generator.profile': 'أنشئ ملفك', 'generator.name.label': 'الاسم الكامل', 'generator.name.placeholder': 'اسمك الكامل', 'generator.job.label': 'المهنة أو التخصص المطلوب', 'generator.job.placeholder': 'المهنة أو التخصص المطلوب', 'generator.level.label': 'المستوى الدراسي', 'generator.level.new': 'حاصل جديد على البكالوريا', 'generator.level.bac2': 'طالب (بكالوريا+2)', 'generator.level.bac3': 'إجازة (بكالوريا+3)', 'generator.level.master': 'ماستر', 'generator.submit': 'إنشاء السيرة والرسالة',
+            'generator.title': 'منشئ السيرة والرسالة', 'generator.sub': 'أدخل معلوماتك لإنشاء مسودة أولى لسيرتك ورسالتك، ثم راجعها وعدّلها.', 'generator.profile': 'أنشئ ملفك', 'generator.name.label': 'الاسم الكامل', 'generator.name.placeholder': 'اسمك الكامل', 'generator.job.label': 'المهنة أو التخصص المطلوب', 'generator.job.placeholder': 'المهنة أو التخصص المطلوب', 'generator.level.label': 'المستوى الدراسي', 'generator.level.new': 'حاصل جديد على البكالوريا', 'generator.level.bac2': 'طالب (بكالوريا+2)', 'generator.level.bac3': 'إجازة (بكالوريا+3)', 'generator.level.master': 'ماستر', 'generator.submit': 'إنشاء السيرة والرسالة',
             'about.tag.senegal': '🇸🇳 صنع في السنغال', 'about.tag.world': '🌍 رؤية دولية', 'about.tag.careers': '🎓 أكثر من 90 مهنة وتخصصاً', 'about.tag.free': '🆓 مجاني 100%', 'modal.info': 'المعلومات', 'modal.school': 'المؤسسة / المكان',
             'favorites.title': 'مفضلاتي', 'favorites.sub': 'ستجد هنا الجامعات والمهن التي حفظتها.', 'favorites.jobs': 'المهن المفضلة', 'favorites.universities': 'الجامعات المفضلة',
             'contact.title': 'تواصل معي', 'contact.sub': 'لديك سؤال أو شراكة أو بلاغ؟ أرسل لي رسالة.', 'contact.details': 'بيانات التواصل', 'contact.email': 'البريد الإلكتروني', 'contact.delay': 'مدة الرد', 'contact.under24': 'خلال 24 ساعة', 'contact.chat.tip': '💡 للحصول على رد فوري، استخدم <strong>ABF Assistant</strong> أسفل الصفحة.', 'contact.form.title': 'أرسل لي رسالة', 'contact.form.sub': 'املأ النموذج. جميع الحقول التي تحمل * مطلوبة.', 'contact.firstname': 'الاسم *', 'contact.firstname.placeholder': 'موسى', 'contact.lastname': 'اللقب *', 'contact.lastname.placeholder': 'ديالو', 'contact.email.label': 'البريد الإلكتروني *', 'contact.email.placeholder': 'you@example.com', 'contact.subject.label': 'موضوع الرسالة *', 'contact.subject.choose': '— اختر موضوعاً —', 'contact.subject.orientation': 'سؤال عن التوجيه', 'contact.subject.university': 'معلومات عن جامعة', 'contact.subject.technical': 'مشكلة تقنية', 'contact.subject.other': 'غير ذلك', 'contact.message.label': 'رسالتك *', 'contact.message.placeholder': 'اشرح طلبك بالتفصيل…', 'contact.submit': 'إرسال الرسالة', 'contact.privacy': 'تستخدم معلوماتك فقط للرد على طلبك ويتم إرسالها عبر EmailJS.', 'contact.privacy.link': 'معرفة المزيد', 'form.error.fields': 'يرجى تصحيح الحقول المحددة بالأحمر.', 'form.error.tooFast': 'يرجى أخذ بضع ثوان لمراجعة رسالتك.', 'form.error.cooldown': 'تم إرسال رسالة للتو. انتظر قبل إرسال رسالة أخرى.', 'form.error.duplicate': 'تم إرسال هذه الرسالة من قبل ولا حاجة لإعادة إرسالها.', 'form.sending': 'جارٍ الإرسال…', 'form.success': 'تم إرسال الرسالة بنجاح! سيصلك تأكيد عبر البريد.', 'form.error.send': 'تعذر إرسال الرسالة.',
@@ -1349,6 +1401,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo(0, 0);
 
     initTheme();
+    initHomeSwiper();
     initAccessibility();
     initUniversities();
     initFields();
@@ -1468,38 +1521,6 @@ function showToast(message, type = 'info', icon = 'fa-star') {
     while (zone.children.length > 3) zone.firstChild.remove();
 }
 
-// --- Astuce du jour (rotation quotidienne + bouton) ---
-const dailyTips = [
-    "Chaque semaine, parcours un métier nouveau sur CAP 221 : la curiosité est la première compétence de l'orientation.",
-    "Utilise le comparateur : choisir entre 2 métiers devient plus simple face à face.",
-    "Sauvegarde tes métiers en favoris (cœur ❤) pour les retrouver même après avoir fermé le site.",
-    "Teste le Chrono Pomodoro dans la section BAC : 25 minutes de travail, 5 minutes de pause.",
-    "Fais le Test d'Orientation en 5 questions pour découvrir les domaines faits pour toi.",
-    "Les sujets et corrigés officiels du BAC sont gratuits : télécharge-les et entraîne-toi en conditions réelles.",
-    "Prépare ton INE avant la campagne Campusen : c'est la clé de ton dossier d'orientation.",
-    "Crée un premier CV avec ABF Assistant, même imparfait : on corrige plus vite ce qui existe déjà."
-];
-
-function currentTipIndex() {
-    const day = Math.floor(Date.now() / 86400000);
-    return day % dailyTips.length;
-}
-
-function showTip(index) {
-    const el = document.getElementById('dailyTip');
-    if (!el) return;
-    el.style.opacity = '0';
-    setTimeout(() => {
-        el.textContent = dailyTips[((index % dailyTips.length) + dailyTips.length) % dailyTips.length];
-        el.style.transition = 'opacity .3s';
-        el.style.opacity = '1';
-    }, 200);
-}
-
-function nextTip() {
-    showTip(currentTipIndex() + Math.floor(Math.random() * (dailyTips.length - 1)) + 1);
-}
-
 // --- Compteurs animés des statistiques du hero ---
 function animateStat(el) {
     const target = parseInt(el.dataset.target, 10);
@@ -1556,7 +1577,6 @@ toggleFav = function (type, id, name, catOrDesc) {
 
 // Branchement à l'initialisation
 document.addEventListener('DOMContentLoaded', () => {
-    showTip(currentTipIndex());
     initStatCounters();
 });
 

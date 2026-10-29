@@ -20,7 +20,7 @@
       content="CAP 221 aide les élèves et étudiants au Sénégal pour leur orientation scolaire : universités, formations post-bac, métiers d'avenir, séries du BAC, sujets et révisions du Baccalauréat, Campusen et concours."
     />
     <meta name="author" content="Alioune Badara Fall" />
-    <meta name="theme-color" content="#0F172A" />
+    <meta name="theme-color" content="#f5f7f3" />
     <meta name="cap221-ai-endpoint" content="/api/ai" />
     <meta name="cap221-build" content="2026-09-20-sw-v5" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
@@ -71,10 +71,21 @@
       rel="stylesheet"
     />
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/redesign.css" />
     <script type="application/ld+json">
       [
       {
@@ -148,7 +159,7 @@
 
     <!-- NAVIGATION -->
     <nav id="mainNav">
-      <div class="nav-container">
+      <div class="nav-container container-fluid">
         <a
           class="logo"
           href="#home"
@@ -207,7 +218,7 @@
             class="theme-btn"
             type="button"
             onclick="navigateTo('favorites')"
-            style="color: var(--accent); border-color: var(--accent)"
+            style="color: var(--primary); border-color: var(--primary)"
             title="Mes Favoris"
             aria-label="Ouvrir mes favoris"
           >
@@ -310,18 +321,18 @@
           </div>
           <div class="hero-content">
             <div class="hero-eyebrow" data-i18n="hero.eyebrow">
-              Orientation scolaire au Sénégal
+              Repères pour s’orienter après le bac au Sénégal
             </div>
             <h1 class="hero-title">
-              <span data-i18n="hero.title1">Le Cap</span><br /><em
+              <span data-i18n="hero.title1">Après le bac,</span><br /><em
                 data-i18n="hero.title2"
-                >vers la</em
-              ><br /><span data-i18n="hero.title3">Réussite</span>
+                >où poursuivre</em
+              ><br /><span data-i18n="hero.title3">mes études ?</span>
             </h1>
             <p class="hero-sub" data-i18n="hero.sub">
-              Trouvez votre orientation scolaire au Sénégal : universités,
-              formations post-bac, métiers d'avenir, séries et sujets du BAC,
-              révisions, Campusen et concours.
+              Universités, filières, concours et sujets du Bac : des
+              informations réunies pour comparer les options et préparer la
+              suite.
             </p>
             <form
               class="home-search"
@@ -337,59 +348,141 @@
               <i class="fas fa-search" aria-hidden="true"></i>
               <input
                 id="homeSearchInput"
+                class="form-control"
                 type="search"
                 autocomplete="off"
                 data-i18n-ph="hero.search.placeholder"
                 placeholder="Ex. développeur, médecine, droit…"
               />
-              <button type="submit" data-i18n="hero.search.button">
+              <button
+                type="submit"
+                class="btn btn-success"
+                data-i18n="hero.search.button"
+              >
                 Rechercher
               </button>
             </form>
             <div class="hero-ctas hero-main-actions">
-              <button class="cta-button" onclick="navigateTo('universities')">
+              <button
+                class="cta-button btn btn-success"
+                onclick="navigateTo('universities')"
+              >
                 <i class="fas fa-university"></i>
                 <span data-i18n="hero.cta1">Universités</span>
               </button>
               <button
-                class="cta-button btn-accent"
+                class="cta-button btn btn-warning btn-accent"
                 onclick="navigateTo('revisions')"
               >
                 <i class="fas fa-file-pdf"></i>
                 <span data-i18n="hero.cta3">Préparer le BAC</span>
               </button>
               <button
-                class="cta-button hero-contact-btn"
+                class="cta-button btn hero-contact-btn"
                 onclick="navigateTo('contact')"
               >
                 <i class="fas fa-envelope"></i>
                 <span data-i18n="hero.cta4">Contact</span>
               </button>
             </div>
-            <div class="stats">
-              <div class="stat-card">
-                <i class="fas fa-university"></i>
-                <div class="stat-num">08</div>
-                <div class="stat-label" data-i18n="stats.univ">
-                  Universités présentées
+          </div>
+          <div class="hero-showcase">
+            <div
+              class="swiper hero-swiper"
+              aria-label="Photos de campus universitaires au Sénégal"
+            >
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img
+                    src="img/campus-ucad-bibliotheque.jpg"
+                    alt="Bâtiment de la bibliothèque universitaire de l’UCAD, à Dakar"
+                    fetchpriority="high"
+                  />
+                  <div class="slide-location">
+                    <span class="slide-location-dot"></span>
+                    BIBLIOTHÈQUE · UCAD, DAKAR
+                  </div>
+                  <a
+                    class="slide-credit"
+                    href="https://commons.wikimedia.org/wiki/File:BU_Universit%C3%A9_Chekh_Anta_Diop_de_Dakar.JPG"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Photo de la bibliothèque de l’UCAD par Rignese, licence CC BY-SA 3.0, sur Wikimedia Commons"
+                    >Rignese · Wikimedia Commons · CC BY-SA 3.0</a
+                  >
+                </div>
+                <div class="swiper-slide">
+                  <img
+                    src="img/campus-ucad-bibliotheque-interieur.jpg"
+                    alt="Étudiants dans la salle de lecture de la bibliothèque Cheikh Anta Diop"
+                    loading="lazy"
+                  />
+                  <div class="slide-location">
+                    <span class="slide-location-dot"></span>
+                    SALLE DE LECTURE · UCAD
+                  </div>
+                  <a
+                    class="slide-credit"
+                    href="https://commons.wikimedia.org/wiki/File:Salle_de_Travail_de_la_biblioth%C3%A8que_Cheik_Anta_Diop_de_Dakar.jpg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Photo de la salle de lecture par Hibou Tranquille, licence CC BY-SA 3.0, sur Wikimedia Commons"
+                    >Hibou Tranquille · Wikimedia Commons · CC BY-SA 3.0</a
+                  >
+                </div>
+                <div class="swiper-slide">
+                  <img
+                    src="img/campus-ugb-tour.jpg"
+                    alt="Tour de l’Université Gaston Berger à Saint-Louis"
+                    loading="lazy"
+                  />
+                  <div class="slide-location">
+                    <span class="slide-location-dot"></span>
+                    UGB · SAINT-LOUIS
+                  </div>
+                  <a
+                    class="slide-credit"
+                    href="https://commons.wikimedia.org/wiki/File:LaTourUGBVueSudOuest.jpg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Photo de la tour de l’UGB par Maissambaye, domaine public, sur Wikimedia Commons"
+                    >Maissambaye · Wikimedia Commons · domaine public</a
+                  >
+                </div>
+                <div class="swiper-slide">
+                  <img
+                    src="img/campus-ucad-1962.jpg"
+                    alt="Vue d’archive de l’Université Cheikh Anta Diop en 1962"
+                    loading="lazy"
+                  />
+                  <div class="slide-location">
+                    <span class="slide-location-dot"></span>
+                    ARCHIVES · UCAD, 1962
+                  </div>
+                  <a
+                    class="slide-credit"
+                    href="https://commons.wikimedia.org/wiki/File:ASC_Leiden_-_NSAG_-_van_Es_20_-_024_-_La_fa%C3%A7ade_d%27un_grand_immeuble_plat_moderne_de_neuf_%C3%A9tages_-_Universit%C3%A9_Cheikh-Anta-Diop,_Dakar,_S%C3%A9n%C3%A9gal_-_27-31-3-1962.tif"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Photo d’archive de l’UCAD prise par Leendert Adriaan van Es, licence CC BY-SA 4.0, sur Wikimedia Commons"
+                    >Leendert Adriaan van Es · CC BY-SA 4.0</a
+                  >
                 </div>
               </div>
-              <div class="stat-card">
-                <i class="fas fa-briefcase"></i>
-                <div class="stat-num">90+</div>
-                <div class="stat-label" data-i18n="stats.jobs">Métiers</div>
-              </div>
-              <div class="stat-card">
-                <i class="fas fa-graduation-cap"></i>
-                <div class="stat-num">6</div>
-                <div class="stat-label" data-i18n="stats.series">
-                  Séries BAC
+              <div class="swiper-controls">
+                <div class="swiper-pagination"></div>
+                <div class="swiper-arrows">
+                  <button
+                    class="swiper-button-prev"
+                    type="button"
+                    aria-label="Photo précédente"
+                  ></button>
+                  <button
+                    class="swiper-button-next"
+                    type="button"
+                    aria-label="Photo suivante"
+                  ></button>
                 </div>
-              </div>
-              <div class="stat-card">
-                <i class="fas fa-star"></i>
-                <div class="stat-num">100%</div>
-                <div class="stat-label" data-i18n="stats.free">Gratuit</div>
               </div>
             </div>
           </div>
@@ -399,20 +492,52 @@
           </div>
         </div>
 
-        <div class="ticker-wrap">
-          <div class="ticker-inner">
-            <span
-              >🎯 UCAD · UGB · UT · UASZ · UADB · UAM · USSEIN · UNCHK · Médecin
-              · Ingénieur · Data Scientist · Avocat · Architecte · Pilote ·
-              Pharmacien · Journaliste · Trader · Designer UX · Vétérinaire ·
-              Notaire · RH ·&nbsp;</span
-            >
-            <span
-              >🎯 UCAD · UGB · UT · UASZ · UADB · UAM · USSEIN · UNCHK · Médecin
-              · Ingénieur · Data Scientist · Avocat · Architecte · Pilote ·
-              Pharmacien · Journaliste · Trader · Designer UX · Vétérinaire ·
-              Notaire · RH ·&nbsp;</span
-            >
+        <div class="home-ticker" role="region" aria-label="À découvrir sur CAP 221">
+          <div class="home-ticker-track">
+            <div class="home-ticker-group">
+              <span><i class="fas fa-compass" aria-hidden="true"></i> <span data-i18n="nav.explore">Métiers</span></span>
+              <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> <span data-i18n="hero.cta3">Préparer le BAC</span></span>
+              <span><i class="fas fa-university" aria-hidden="true"></i> <span data-i18n="nav.univ">Universités</span></span>
+              <span><i class="fas fa-arrow-trend-up" aria-hidden="true"></i> <span data-i18n="nav.concours">Concours</span></span>
+            </div>
+            <div class="home-ticker-group" aria-hidden="true">
+              <span><i class="fas fa-compass"></i> <span>Métiers</span></span>
+              <span><i class="fas fa-graduation-cap"></i> <span>Préparer le BAC</span></span>
+              <span><i class="fas fa-university"></i> <span>Universités</span></span>
+              <span><i class="fas fa-arrow-trend-up"></i> <span>Concours</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="home-stats-band">
+          <div class="stats">
+            <div class="stat-card card">
+              <i class="fas fa-university" aria-hidden="true"></i>
+              <div>
+                <div class="stat-num">8</div>
+                <div class="stat-label" data-i18n="stats.univ">Universités présentées</div>
+              </div>
+            </div>
+            <div class="stat-card card">
+              <i class="fas fa-briefcase" aria-hidden="true"></i>
+              <div>
+                <div class="stat-num">90+</div>
+                <div class="stat-label" data-i18n="stats.jobs">Métiers</div>
+              </div>
+            </div>
+            <div class="stat-card card">
+              <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+              <div>
+                <div class="stat-num">6</div>
+                <div class="stat-label" data-i18n="stats.series">Séries BAC</div>
+              </div>
+            </div>
+            <div class="stat-card card">
+              <i class="fas fa-star" aria-hidden="true"></i>
+              <div>
+                <div class="stat-num">0 FCFA</div>
+                <div class="stat-label" data-i18n="stats.free">Gratuit</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -432,56 +557,108 @@
 
         <section class="visual-guides" aria-labelledby="visualGuidesTitle">
           <div class="sec-header reveal">
-            <div class="sec-eyebrow">Nos repères</div>
+            <div class="sec-eyebrow" data-i18n="photos.eyebrow">
+              Sur les campus
+            </div>
             <h2 id="visualGuidesTitle">
-              Des repères pour mieux choisir<br /><em>ton parcours</em>
+              <span data-i18n="photos.title">Des lieux d’études</span><br /><em
+                data-i18n="photos.em"
+                >au Sénégal</em
+              >
             </h2>
             <div class="sec-line"></div>
           </div>
           <div class="visual-guides-grid">
             <figure class="visual-guide-card reveal">
+              <img
+                src="img/campus-ucad-bibliotheque.jpg"
+                alt="Façade de la bibliothèque universitaire de l’UCAD"
+                loading="lazy"
+              />
               <figcaption>
-                <strong>Universités</strong>
-                <span>Repère les établissements et leurs formations.</span>
+                <strong data-i18n="photos.ucad.title"
+                  >Bibliothèque de l’UCAD · Dakar</strong
+                >
+                <span data-i18n="photos.ucad.desc"
+                  >Un bâtiment du campus Cheikh Anta Diop.</span
+                >
+                <a
+                  class="visual-guide-credit"
+                  href="https://commons.wikimedia.org/wiki/File:BU_Universit%C3%A9_Chekh_Anta_Diop_de_Dakar.JPG"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Photo : Rignese · CC BY-SA 3.0</a
+                >
+                <button
+                  type="button"
+                  class="guide-link"
+                  onclick="navigateTo('universities')"
+                  data-i18n="photos.button"
+                >
+                  Voir les fiches universités
+                </button>
               </figcaption>
             </figure>
             <figure class="visual-guide-card reveal">
+              <img
+                src="img/campus-ucad-bibliotheque-interieur.jpg"
+                alt="Salle de lecture avec des étudiants à la bibliothèque de l’UCAD"
+                loading="lazy"
+              />
               <figcaption>
-                <strong>Métiers</strong>
-                <span>Explore les secteurs qui correspondent à tes envies.</span>
+                <strong data-i18n="photos.library.title"
+                  >Une salle de lecture · UCAD</strong
+                >
+                <span data-i18n="photos.library.desc"
+                  >La bibliothèque universitaire, à Dakar.</span
+                >
+                <a
+                  class="visual-guide-credit"
+                  href="https://commons.wikimedia.org/wiki/File:Salle_de_Travail_de_la_biblioth%C3%A8que_Cheik_Anta_Diop_de_Dakar.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Photo : Hibou Tranquille · CC BY-SA 3.0</a
+                >
+                <button
+                  type="button"
+                  class="guide-link"
+                  onclick="navigateTo('universities')"
+                  data-i18n="photos.button"
+                >
+                  Voir les fiches universités
+                </button>
               </figcaption>
             </figure>
             <figure class="visual-guide-card reveal">
+              <img
+                src="img/campus-ugb-tour.jpg"
+                alt="Tour de l’Université Gaston Berger, à Saint-Louis"
+                loading="lazy"
+              />
               <figcaption>
-                <strong>Préparation au BAC</strong>
-                <span>Révise avec les sujets et corrigés officiels.</span>
+                <strong data-i18n="photos.ugb.title">UGB · Saint-Louis</strong>
+                <span data-i18n="photos.ugb.desc"
+                  >L’entrée de l’Université Gaston Berger.</span
+                >
+                <a
+                  class="visual-guide-credit"
+                  href="https://commons.wikimedia.org/wiki/File:LaTourUGBVueSudOuest.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Photo : Maissambaye · domaine public</a
+                >
+                <button
+                  type="button"
+                  class="guide-link"
+                  onclick="navigateTo('universities')"
+                  data-i18n="photos.button"
+                >
+                  Voir les fiches universités
+                </button>
               </figcaption>
             </figure>
           </div>
         </section>
-
-        <div class="tip-section">
-          <div class="tip-card reveal">
-            <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
-            <div class="tip-body">
-              <div class="sec-eyebrow" data-i18n="tip.title">
-                Astuce du jour
-              </div>
-              <p id="dailyTip">
-                Chaque semaine, parcours un métier nouveau sur CAP 221 : la
-                curiosité est la première compétence de l'orientation.
-              </p>
-            </div>
-            <button
-              class="tip-next"
-              type="button"
-              onclick="nextTip()"
-              aria-label="Afficher une autre astuce"
-            >
-              <i class="fas fa-dice"></i>
-            </button>
-          </div>
-        </div>
 
         <div class="why-section">
           <div class="why-inner">
@@ -505,22 +682,26 @@
                 <div class="why-item">
                   <i class="fas fa-check-circle"></i>
                   <span data-i18n="why.f1"
-                    >Repères sur 8 universités du Sénégal</span
+                    >Fiches sur huit universités publiques</span
                   >
                 </div>
                 <div class="why-item">
                   <i class="fas fa-check-circle"></i>
                   <span data-i18n="why.f2"
-                    >Sujets et corrigés officiels par série</span
+                    >Sujets et corrigés du Bac classés par série</span
                   >
                 </div>
                 <div class="why-item">
                   <i class="fas fa-check-circle"></i>
-                  <span data-i18n="why.f3">Assistant IA disponible 24h/24</span>
+                  <span data-i18n="why.f3"
+                    >Liens vers les portails officiels</span
+                  >
                 </div>
                 <div class="why-item">
                   <i class="fas fa-check-circle"></i>
-                  <span data-i18n="why.f4">Statistiques nationales du BAC</span>
+                  <span data-i18n="why.f4"
+                    >Des outils pour préparer son parcours</span
+                  >
                 </div>
               </div>
               <button class="cta-button" onclick="navigateTo('about')">
@@ -528,23 +709,40 @@
                 <i class="fas fa-arrow-right"></i>
               </button>
             </div>
-            <div class="why-vis reveal">
-              <div class="why-card wc1">
-                <i class="fas fa-brain fa-2x"></i
-                ><span data-i18n="why.c1">IA Coach</span>
-              </div>
-              <div class="why-card wc2">
-                <i class="fas fa-university fa-2x"></i
-                ><span data-i18n="why.c2">Universités</span>
-              </div>
-              <div class="why-card wc3">
-                <i class="fas fa-trophy fa-2x"></i
-                ><span data-i18n="why.c3">Excellence</span>
-              </div>
-              <div class="why-card wc4">
-                <i class="fas fa-bolt fa-2x"></i
-                ><span data-i18n="why.c4">Instantané</span>
-              </div>
+            <div class="why-sources reveal">
+              <h3 data-i18n="why.sources.title">
+                Pour vérifier les démarches
+              </h3>
+              <a
+                href="https://www.campusen.sn/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                <span>
+                  <strong>Campusen</strong>
+                  <small data-i18n="why.sources.campusen"
+                    >Admissions et orientation post-bac</small
+                  >
+                </span>
+              </a>
+              <a
+                href="https://officedubac.sn/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                <span>
+                  <strong>Office du Baccalauréat</strong>
+                  <small data-i18n="why.sources.bac"
+                    >Informations et ressources du Bac</small
+                  >
+                </span>
+              </a>
+              <p data-i18n="why.sources.note">
+                Les conditions et les dates peuvent évoluer : consultez toujours
+                les annonces officielles.
+              </p>
             </div>
           </div>
         </div>
@@ -555,19 +753,21 @@
         <div class="page-mini-hero">
           <h2>
             <i class="fas fa-university"></i>
-            <span data-i18n="universities.title">Les Temples du Savoir</span>
+            <span data-i18n="universities.title"
+              >Universités publiques du Sénégal</span
+            >
           </h2>
           <p data-i18n="universities.sub">
-            Découvrez 8 universités du Sénégal et accédez au catalogue national
-            pour une liste complète.
+            Huit établissements à découvrir. Comparez les formations et
+            vérifiez les démarches auprès des sources officielles.
           </p>
         </div>
         <div style="max-width: 1400px; margin: auto; padding: 3rem 1.5rem">
           <div class="source-note">
             <i class="fas fa-info-circle"></i>
             <span data-i18n="universities.note"
-              >Cette sélection n’est pas exhaustive. Informations vérifiées le
-              22 juillet 2026.</span
+              >Ces fiches donnent des repères. Vérifiez les filières et les
+              conditions d’admission auprès des établissements ou de Campusen.</span
             >
             <a
               href="https://www.campusen.sn/"
@@ -1829,6 +2029,13 @@
       </div>
     </div>
 
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
       defer
