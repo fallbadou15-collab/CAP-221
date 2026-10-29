@@ -1,10 +1,10 @@
-User-agent: Google-InspectionTool
+User-agent: *
 Allow: /
 
 User-agent: Googlebot
 Allow: /
 
-User-agent: *
+User-agent: Google-InspectionTool
 Allow: /
 
 Sitemap: https://cap221.com/sitemap.xml
